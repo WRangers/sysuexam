@@ -1,0 +1,1123 @@
+\documentclass[list,answers,csize4,custom]{sysuexam}
+
+%% 试卷信息设置
+\studenttype{本科生}          % 考生类型
+\examperiod{期末}             % 考试时期
+\subject{电子人的自我修养}     % 考试科目
+\papertype{$\mpi$}            % 试卷型号
+\termyear{2020}{2021}         % 学年
+\term{1}                      % 学期
+\school{\nf{School of Rader}} % 学院/系
+\examtype{开卷}               % 考试方式
+\examtime{∞}                  % 考试时长
+\numofq{7}                    % 大题数目
+
+
+%% 其他
+\graphicspath{{figures/}}      % 图片路径
+\pagestyle{fancy}
+
+\begin{document}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% 使用时将此部分删掉 %%%%%%%%%%%%%%%%%%%%%%
+
+\section{文类说明}
+此文本类的设计萌生于期末复习数字信号处理做试卷之时,在复习不下去的时候便敲打敲打键盘,构建了基本的骨架——权当复习的放松与娱乐.
+
+\mt{sysuexam.cls}文类是基于\href{www.mathcrowd.cn}{橘子数学社区}开发的\href{https://github.com/mathedu4all/bhcexam}{\mt{BCHexam.cls}} Version 1.5文类,进行修改和设计,在此致谢.
+
+本文档包含三部分——文类说明、版本说明和样卷与说明.样卷试题来源于平时练习与考试试卷,片面反映一个电子人的素养.
+
+样卷中的绘图都是基于宏包Ti\textit{k}Z和PGF宏包绘制,感谢Prof.Till Tantau发明出如此强大的宏包,更感谢Prof.Donald Ervin Knuth和无数程序员开发出\TeX{}和\LaTeX{},让鄙人领略到\textit{代码改变世界}的精彩.\par
+\hfill 2020.01.17
+
+\subsection{宏包选项}\hypertarget{hbxx}{}
+\begin{tabular}{ll}
+    $\bullet$ \mt{answers}  &  编译答案和解析版本                 \\
+    $\bullet$ \mt{list}     &  以列表项目格式显示试题              \\
+    $\bullet$ \mt{twocolumn}&  使用A3纸张并分栏                   \\
+    $\bullet$ \mt{custom}   &  使用\textit{私订}字体(存在修改\CTeX{}%
+                               默认字体警告,不影响使用)            \\
+    $\bullet$ \mt{adobe}    &  使用Adobe字体                      \\
+    $\bullet$ \mt{ubuntu}   &  使用Ubuntu字体                     \\
+    $\bullet$ \mt{windows}  &  使用Windows字体                    \\
+    $\bullet$ \mt{fandol}   &  使用Fandol字体,随\TeX{}Live默认安装 \\
+    $\bullet$ \mt{mac}      &  使用Mac字体                        \\
+    $\bullet$ \mt{csize5}   &  默认字体大小为五号                  \\
+    $\bullet$ \mt{csize4}   &  默认字体大小为小四                  \\
+\end{tabular}
+
+\subsection{字体安装}
+\subsubsection{私订配置}
+此文类中文字体为思源宋体、微软雅黑、方正楷体和方正仿宋;英文字体使用XITS、Arial和Courier New;数学字体采用XITS Math.~XITS是Times New Roman的复刻版本,字符更加齐全;英文字体和数学字体的统一可以让段落模式和数学模式的标点符号一致.此字体配置仅仅代表个人审美偏好,姑且将此字体配置称为\textit{私订}配置.
+
+在Windows系统上,把文件夹 \mt{fonts} 中的字体(\textbf{不要修改字体名称})拷贝到路径\mt{C:\backslash{}Windows\backslash{}Fonts}中.如果使用MiK\TeX{},则可以直接编译.~MiK\TeX{}第一次编译时可能会编译失败,因为有些宏包可能没安装,可以手动安装或者多次编译,让其自动安装.
+
+如果使用\TeX{}Live,则还要把字体文件拷贝到\TeX{}Live的字体文件夹中,路径格式一般如下:\par
+\mt{盘符:\backslash{}...\backslash{}texlive\backslash{}年份\backslash{}texmf-dist\backslash{}fonts\backslash{}truetype}\par
+\noindent 中,才可正常编译.
+
+如果是其他系统,请自行Google安装方法!关于字体的更多设置,~\CTeX{}宏包文档中没有说明得很详细,可以参看\href{http://mirrors.ctan.org/macros/xetex/latex/xecjk/xeCJK.pdf}{xecjk宏包文档}和\href{http://mirrors.ctan.org/macros/unicodetex/latex/fontspec/fontspec.pdf}{fontspec宏包文档}.
+
+\subsubsection{默认配置}
+如果觉得\textit{私订}配置太繁琐,则可以直接将文类选项 \mt{custom} 改为对应自己系统的选项(如Windows系统下为\mt{windows}),参见\hyperlink{hbxx}{1.1 宏包选项},提供的是与\CTeX{}一致的字体配置接口,详细说明参考\href{http://mirrors.ctan.org/language/chinese/ctex/ctex.pdf}{\CTeX{}宏包文档}.
+
+如果使用非Windows的字族,可能会有报错,因为文类文件中用了一此选项下的字体命令,找到报错命令的位置,进行替换或定义报错命令即可.
+
+\subsection{编译说明}
+\begin{compactitem}
+    \item 如果使用\textit{私订}字体配置,必须用\hologo{XeLaTeX}(或\hologo{XeTeX})编译,因为需加载fontspec宏包.
+    \item 如果使用\CTeX{}宏包提供的字体配置,则参考\href{http://mirrors.ctan.org/language/chinese/ctex/ctex.pdf}{\CTeX{}宏包文档}.
+    \item 基于\hologo{LuaLaTeX}或\hologo{LuaTeX}的编译请参考\href{http://mirrors.ctan.org/language/chinese/ctex/ctex.pdf}{\CTeX{}宏包文档}.
+    \item 不要调换fontspec宏包、\CTeX{}宏包和unicode-math宏包的调用顺序,否则会clash(原因应该在于内部的字体组织架构).
+\end{compactitem}
+
+\subsection{命令}
+试卷排版命令袭承\href{https://github.com/mathedu4all/bhcexam}{\mt{BCHexam.cls}},可以参考\href{http://docs.mathcrowd.cn/advances/bhcexam.html}{BCHexam文档}. \mt{sysuexam.cls}在原基础上优化了环境设置并增加一些环境命令,下面将会详细介绍.
+
+\subsubsection{试卷信息}
+\ml{\backslash{}studenttype\{考生类型\}}{本科生、硕士生或者博士生.}
+\ml{\backslash{}examperiod\{考试时期\}}{期中考或期末考.}
+\ml{\backslash{}subject\{考试科目\}}{考试科目.}
+\ml{\backslash{}papertype\{试卷类型\}}{A卷或B卷.}
+\ml{\backslash{}termyear\{起始年\}\{终止年\}}{学年度.}
+\ml{\backslash{}term\{学期\}}{第1或第2学期,只需输入数字.}
+\ml{\backslash{}school\{学院/系\}}{学院或院系名称.}
+\ml{\backslash{}examtype\{考试方式\}}{开卷考或闭卷考.}
+\ml{\backslash{}examtime\{考试时长\}}{考试时长,单位为分钟,只需输入数字.}
+\ml{\backslash{}numofq\{大题数目\}}{试卷大题总数,只需输入数字.}
+\ml{\backslash{}maketitle}{生成试卷头,此命令会有\mt{Overfull}警告,不影响使用.}
+
+\subsubsection{题组环境}
+\begin{verbatim}
+\begin{groups}
+    \group{题组1}{题组1的描述}
+    ...
+    \group{题组2}{题组2的描述}
+    ...
+\end{groups}
+\end{verbatim}
+
+将所有试题包含在\mt{groups}环境中,每一个\mt{group}是一个大题(选择题、填空题和计算题等).
+
+\subsubsection{试题环境}
+\begin{verbatim}
+\begin{questions}[可选参数]
+    \question[分值] 这道填空题的答案是\pkey{B}.
+    ...
+    \question[4] 这道选择题的答案是\key{A}.
+    \fourchoices{选项1}{选项2}{选项3}{选项4}
+    ...
+    \question[4] 这道题一个选项是正确的\kh
+    ...
+    \question[4] 这道题一个选项是正确的\hx
+    \hint
+    ...
+    \question[10] 这是一道简答题.
+    ...
+\end{questions}
+\end{verbatim}
+
+可选参数\mt{r}: 题号从1开始.
+
+可选参数\mt{s}: 显示环境内试题的分值.
+
+可选参数\mt{t}: 在环境内试题后预留答题空间.
+
+可选参数\mt{p}: 在选择题后增加右对齐的括号.
+
+\begin{verbatim}
+\begin{subquestions}
+    \subquestion[分值] 第1小问  % 分值默认为0分.
+    \subquestion[分值] 第2小问
+    \subquestion[分值] 第3小问
+\end{subquestions}
+\end{verbatim}
+
+小问环境.
+
+\ml{\backslash{}question[分值] 题目内容}{在试题环境中新增试题,分值为数值,要同\mt{questions}的\mt{s}选项一起使用.}
+\ml{\backslash{}example 题目内容}{在试题环境中新增一道例题.}
+\ml{\backslash{}exercise 题目内容}{在试题环境中新增一道习题.}
+\ml{\backslash{}pkay{答案}}{在学生版试卷中显示一个括号,在教师版试卷中括号中会显示答案,针对选择题.}
+\ml{\backslash{}kay{答案}}{在学生版试卷中显示与答案匹配长度的横线,在教师版试卷中括号中会显示答案,针对填空题.}
+\ml{\backslash{}kh}{仅显示括号.}
+\ml{\backslash{}hx[宽度]}{仅仅显示横线,默认为4个字宽,也可以通过选项自定义.}
+\ml{\backslash{}threechoices}{显示3个选项.}
+\ml{\backslash{}fourchoices}{显示4个选项.}
+\ml{\backslash{}fivechoices}{显示5个选项.}
+\ml{\backslash{}sixchoices}{显示6个选项.}
+\ml{\backslash{}hint}{显示``提示''字样.}
+
+\subsubsection{解答环境}
+\begin{verbatim}
+\begin{solution}[答题空间高度]
+    \answers 把冰箱打开
+    \score{10}{10}
+    把大象塞进冰箱
+    \socre{10}{20}
+    关上冰箱门
+    \score{10}{30}
+\end{solution}
+\end{verbatim}
+
+解答环境,紧跟着试题之后.``答题空间高度''默认为0cm,输入格式为``数字+单位''(单位可以是cm,mm或其他),要同\mt{questions}的\mt{t}选项一起使用.
+
+\ml{\backslash{}ans}{显示``答''字样.}
+\ml{\backslash{}answer}{显示``答案''字样.}
+\ml{\backslash{}answers}{显示``解''字样.}
+\ml{\backslash{}method}{显示''解法<中文数字>''字样, <中文字数>由内部计数器自动计数.}
+\ml{\backslash{}proof}{显示``证明''字样.}
+\ml{\backslash{}proofover}{在行末输出证毕符号$\square$.}
+\ml{\backslash{}analysis}{显示``解析''字样.}
+\ml{\backslash{}thought}{显示``分析''字样.}
+\ml{\backslash{}remark[其他文字]}{默认显示``注''字样,输入可选参数,则显示内容与``其他文字''一致.}
+\ml{\backslash{}score{此步骤得分}{累计得分}}{插入该步骤得分,显示此步骤的得分和累计得分.}
+
+\subsubsection{其他命令}
+\ml{\backslash{}sj}{置于段首,缩(s)进(j)两个字符空格,用于\mt{solution}环境中,因为这个环境另起一段不能自动缩进.}
+
+\subsection{自定义设置}
+\subsubsection{颜色}
+链接颜色和解析颜色设置如下,颜色配置请参考\href{https://mirror-hk.koddos.net/CTAN/macros/latex/contrib/xcolor/xcolor.pdf}{xcolor宏包}.
+\begin{lstlisting}[title=颜色设置,language=tex,firstnumber=92]
+\colorlet{dr}{red!70!black}	    % 链接颜色
+\colorlet{jx}{red!70!black}		% 答案和解析颜色
+\end{lstlisting}
+
+\subsubsection{符号}
+\textit{私订}字族使用XTIS Math数学字体,其求和符号和$\pi$符号不是很好看,故声明了两个新的符号命令,分别为\mt{\backslash{}msum}和\mt{\backslash{}mpi},产生Modern Math字体下对应的符号(仅代表个人审美),即
+$$
+\begin{array}{c}
+\sum \rightarrow \msum \,,\\
+\pi  \rightarrow \mpi  \,.
+\end{array}
+$$
+
+由于unicode-math宏包自己提供的数学符号花体和粗体命令,也作的命令的更新,如果不使用unicode-math宏包会报错,将\mt{sysuexam.cls}中行184--185注释掉即可.
+
+\begin{lstlisting}[title={\mt{sysuexam.cls}文件中\mt{\backslash{}msum}和\mt{\backslash{}mpi}}声明和更新命令,language=tex,firstnumber=177]
+% 重设\sum符号
+\DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
+\DeclareMathSymbol{\msum}{\mathop}{largesymbols}{"50}
+% 重设\pi符号
+\DeclareSymbolFont{letters}{OML}{cmm}{m}{it}
+\DeclareMathSymbol{\mpi}{\mathord}{letters}{"19}
+% 更新符号命令
+\renewcommand{\boldsymbol}{\symbf}
+\renewcommand{\mathscr}{\symscr}
+\end{lstlisting}
+
+\subsubsection{页面边距}
+修改此处代码即可.
+\begin{lstlisting}[title=页面边距设置,language=tex,firstnumber=261]
+%
+% 双栏显示
+%
+\if@twocolumn
+\geometry{a3paper,landscape,twocolumn,columnsep=40mm,left=20mm,%
+right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
+\else														   % 单栏设置
+\geometry{a4paper,left=25mm,right=25mm,top=25mm,bottom=25mm, headheight=20mm}
+\fi
+\end{lstlisting}
+
+\subsubsection{代码高亮}
+代码高亮设置如下,更多内容请参考\href{http://texdoc.net/texmf-dist/doc/latex/listings/listings.pdf}{listings宏包}.
+\begin{lstlisting}[title=代码高亮设置,language=tex,firstnumber=212]
+    columns=fixed,
+    numbers=left,                                % 在左侧显示行号
+    frame=tb,                                    % 背景边框
+    %  backgroundcolor=\color[RGB]{245,245,244}, % 设定背景颜色
+    keywordstyle=\bfseries\color[HTML]{008000},  % 设定关键字颜色
+    numberstyle=\scriptsize\color{darkgray},     % 行号颜色
+    commentstyle=\it\color[HTML]{438282},        % 设置代码注释的格式
+    stringstyle=\kaiti\color[HTML]{ba2121},      % 设置字符串格式
+    showstringspaces=false,                      % 不显示字符串中的空格
+    % emph={wire,reg,prod},
+    % emphstyle=\color[HTML]{b00040},
+    % language=verilog,                          % 设置语言
+    basicstyle=\ttfamily\small,
+    % belowskip=1em,                             % 代码块结束间隔 
+    aboveskip=1.5em,                             % 代码块开始间隔 
+    breaklines=true,                             % 断行
+    breakatwhitespace=true,                      % 在空格处断行
+    captionpos=b,                                % 设置标题位置
+\end{lstlisting}
+
+\section{版本说明}
+\small{
+\ver{v0.7}{(2020/01/17-2020/01/19)}\par
+\begin{compactitem}
+    \item 基于\href{https://github.com/mathedu4all/bhcexam}{\mt{BCHexam.cls}} Version 1.5文类开发文类.
+    \item 为兼容字号,采用\CTeX{}宏包,默认正文字号为小四.底层文类仍为article,而非ctexart,避免不必要的麻烦;但这会造成字号的不连续性,例如section这个版本的字号过大,显得不尽美观,但试卷并不需要用到section命令,影响不大,待新版本优化.
+    \item 完成试卷题头的设计.
+\end{compactitem}
+
+\todo\par
+\begin{compactitem}
+    \item 优化字号的连续性.
+    \item 将字体\textit{私订}配置选择作为宏包选项,配置\CTeX{}宏包提供的字体系列的接口.
+    \item 完成样卷排版与命令说明.
+\end{compactitem}
+
+\ver{v1.0}{(2020/01/20-2020/01/21)}\par
+\begin{compactitem}
+    \item 配置字族接口.
+    \item 优化选项设计,消除原文类\mt{Overfull}警告,对4选项命令精细控制.
+    \item 增添题解环境命令.
+    \item 完成样卷排版与使用说明.
+\end{compactitem}
+\medskip
+
+文类设计基本完成,后续应该不会有大的更新.~Happy \LaTeX{}ing!
+}
+
+\section{样卷与说明}
+
+%%%%%%%%%%%%%%%%%%%%%% 使用时将此部分删掉 %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% 样卷排版 %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{groups}
+\group{单选题}{本大题共4小题,共20分}
+\begin{questions}[rs]
+    \question[5] $\delta(\sin t)=$\kh
+    \fourchoices{1}{0}{$\msum_{k=-\infty}^{\infty} \delta(t-k \mpi)$}{$\infty$}
+    \begin{solution}
+        \answer C
+        \analysis 由于当 $t=k \mpi$ 时,~$\sin t=0$.所以 $\delta(\sin t)=\msum_{k=-\infty}^{\infty} \delta(t-k \mpi)$.
+    \end{solution}
+
+    \question[5] 某连续时间系统输入$f(t)$ 和输出 $y(t)$ 满足 $y(t)=|f(t)-f(t-1)|$,则系统为\kh
+    \fourchoices{线性、非时变}{非线性、非时变}{线性、时变}{非线性、时变}
+    \begin{solution}
+        \answer B
+        \analysis 讨论线性.假设有 $y_{1}(t)=\left|f_{1}(t)-f_{1}(t-1)\right|$ 和 $y_{2}(t)=\left|f_{2}(t)-f_{2}(t-1)\right|$, 即对输入 $f_{1}(t)$,有输出 $y_{1}(t) $; 对输入 $f_{2}(t)$, 有输出 $y_{2}(t) $. 由以上可知$$
+        y_{1}(t)+y_{2}(t)=\left|f_{1}(t)-f_{1}(t-1)\right|+\left|f_{2}(t)-f_{2}(t-1)\right|\ .
+        $$
+
+        \sj 然而 $\left|f_{1}(t)-f_{1}(t-1)\right|+\left|f_{2}(t)-f_{2}(t-1)\right|$ 不一定等于
+        $$\left| f_{1}(t)+f_{2}(t)-\left[f_{1}(t-1)+f_{2}(t-1)\right]\right|\,,$$所以该系统为非线性.
+
+        \sj 讨论时变性.对于任意的时移,有 $y\left(t-t_{0}\right)=\left|f\left(t-t_{0}\right)-f\left(t-t_{0}-1\right)\right|$, 因而该系统是非时变的.
+    \end{solution}
+
+    \question[5] 已知 $r(t)=e(t) * h(t)$, 则 $e(2 t) * h(2 t)$ 为\kh
+    \fourchoices{$\frac{1}{2} r(2 t)$}{$\frac{1}{4} r(2 t)$}{$\frac{1}{2} r(4 t)$}{$\frac{1}{4} r(4 t)$}
+    \begin{solution}
+        \answer A
+        \analysis 由傅里叶变换尺度变换性质,可得:$$
+        \begin{aligned}
+        \symscr{F}[e(2 t) * h(2 t)]&=\symscr{F}[e(2 t)] \cdot \symscr{F}[h(2 t)]\\
+        &=\frac{1}{2} E\left(\frac{\omega}{2}\right) \cdot \frac{1}{2} H\left(\frac{\omega}{2}\right)=\frac{1}{4} E\left(\frac{\omega}{2}\right) H\left(\frac{\omega}{2}\right)=\frac{1}{4} R\left(\frac{\omega}{2}\right)\ ,
+        \end{aligned}$$
+        再由傅里叶变换尺度变换性质求其逆变换,可得$\symscr{F}^{-1}\left[\frac{1}{4} R\left(\frac{\omega}{2}\right)\right]=\frac{1}{2} r(2 t)$.
+    \end{solution}
+
+    \question[5] 下列关于周期矩形脉冲信号的论述中,正确的是\kh
+    \fourchoices{脉冲周期增大则主瓣宽度变小}{脉冲周期增大则主瓣宽度变大}{脉冲宽度增大则主瓣宽度变小 }{脉冲宽度增大则主瓣宽度变大}
+    \begin{solution}
+    \answer C
+    \analysis 主瓣宽度与脉冲宽度成反比,谱线间隔与脉冲周期成反比.
+    \end{solution}
+\end{questions}
+
+\group{不定项选择题}{本大题共2小题,共4分}
+\begin{questions}[rs]
+    \question[2]信号 $x(t)$ 的 Nyquist 抽样频率为 $\omega_{1}$, 则信号 $x(t) x(2 t+1) \cos \omega_{2} t$ 的 Nyquist 抽样频率为\kh
+    \fivechoices{$\omega_{2}+3 \omega_{1}$}{$\omega_{2}+6 \omega_{1}$}{$2 \omega_{2}+3 \omega_{1}$}{$2 \omega_{2}+6 \omega_{1}$}{$3\omega_{2}+7\omega_{1}$}
+    \begin{solution}
+        \answer C
+    \end{solution}
+
+    \question[2]已知数字音乐的抽样频率是 44.1KHz,由此,我们可以推测,人的听力频率范围的上限接近\pkey{B}
+    \sixchoices{10kHz}{20kHz}{30kHz}{40kHz}{50kHz}{60kHz}
+\end{questions}
+
+\group{填空题}{本大题共2小题,共10分}
+\begin{questions}[rs]
+    \question[5] 已知某系统的输出 $r(t)$ 与输入 $e(t)$ 之间的关系为 $r(t)=e(2 t)+\frac{\mathrm{d} e(t)}{\mathrm{d} t}$,试判断该系统是什么系统(线性、时不变性)\hx
+    \begin{solution}
+        \answer 线性、时变系统
+        \analysis 设 $e_{1}(t) \rightarrow r_{1}(t),e_{2}(t) \rightarrow r_{2}(t)$,则:
+        $$
+        a e_{1}(t)+b e_{2}(t) \rightarrow a e_{1}(2 t)+a \frac{\mathrm{d} e_{1}(t)}{\mathrm{d} t}+b e_{2}(2 t)+b \frac{\mathrm{d} e_{2}(t)}{\mathrm{d} t}=a r_{1}(t)+b r_{2}(t)\,,
+        $$故系统是线性的.
+
+        \sj 设 $e(t) \rightarrow r(t)$,则 $e(t-a) \rightarrow e(2 t-a)+\frac{\mathrm{d} e(t-a)}{\mathrm{d} t} \neq r(t-a)$,故系统是时变的.
+    \end{solution}
+
+    \question[5]  信号 $f(t)$ 的频谱密度函数 $F(j \omega)$ 如图所示,则 $f(0)$ 等于\key{4}
+    \begin{center}
+        \begin{tikzpicture}
+            \pgfplotsset{width=5cm,height=4cm}
+            \begin{axis}[
+                axis y line=center,
+                axis x line=middle,
+                xlabel=$\omega$,xlabel shift=-20pt,
+                ylabel=$F(j\omega)$,
+                xmax=3,
+                xmin=-3,
+                ymax=3,
+                ymin=0,
+                xtick={-2,0,2},xticklabels={$-4\mpi$,0,$4\mpi$},
+                ytick={2},%yticklabels={-1,-2,0.25,1},
+                hide obscured x ticks=false,
+                every inner x axis line/.append style={-Stealth},
+                every inner y axis line/.append style={-Stealth}]
+                \addplot[thick] coordinates 
+                {(-2,0)(0,2)(2,0)};
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+    \begin{solution}
+        \analysis 根据傅里叶反变换的定义,有 $f(t)=\frac{1}{2 \mpi} \int_{-\infty}^{\infty} F(j \omega) \mathrm{e}^{j \omega t} \mathrm{d} \omega$,故
+        $$
+    f(0)=\left.\frac{1}{2 \mpi} \int_{-\infty}^{\infty} F(j \omega) \mathrm{e}^{j \omega t}\right|_{t=0} \mathrm{d} \omega=\frac{1}{2 \mpi} \int_{-\infty}^{\infty} F(j \omega) \mathrm{d} \omega=4\,.
+    $$
+    \end{solution}
+    
+\end{questions}
+
+\group{简答题}{本大题共1小题,共10分}
+\begin{questions}
+    \question[10] 简要分析冲激响应不变法为什么不能用于设计数字高通和带阻滤波器.
+    \begin{solution}
+        \ans 冲击响应不变法实际是一种时域逼近方法,即用滤波器的采样信号$h(n)$去逼近滤波器的冲击响应$h(t)$,而采样会带来频谱混叠,在高通或带阻的情况下,模拟滤波器的高频部分存在较高增益,因此在采样后,数字滤波器的在频域会产生严重的混叠,导致原来的阻带(低频)会叠加上高频部分的多个周期延拓,导致阻带增益增加,失去滤除低频成分的能力.同时,数字滤波器的高频部分也受到污染,导致通带特性改变.
+    \end{solution}
+\end{questions}
+
+\group{设计题}{本大题共2小题,共10分}
+\begin{questions}
+    \question[5] 有一种特殊的串行通信系统,数据以包的形式传输,数据的包头为\mt{01111110},然后为数据内容,然后以\mt{01111110}结尾,请设计数据组包时的FSM状态转移图.
+    \begin{solution}
+        \answers
+        \begin{center}
+            \begin{tikzpicture}[->,>={Stealth[round]},shorten >=1pt,%
+                auto,semithick,
+                inner sep=3pt,bend angle=27,every node/.style={draw,circle}]
+                \node (0) at (0,0)      {$S_0$};
+                \node (1) at (90:3cm)   {$S_1$};
+                \node (2) at (18:3cm)   {$S_2$};
+                \node (3) at (-54:3cm)  {$S_3$};
+                \node (4) at (-126:3cm) {$S_4$};
+                \node (5) at (162:3cm)  {$S_5$};
+        
+                \path[every node/.style={font=\footnotesize}]
+                (0) edge[loop below] node{\tt{0/0}} (0)
+                (1) edge[bend left] node{\tt{1/0}} (2)
+                (2) edge node{\tt{0/0}} (0)
+                edge[bend left] node{\tt{1/0}} (3)
+                (3) edge node[swap]{\tt{0/0}} (0)
+                edge[bend left] node{\tt{1/0}} (4)
+                (4) edge node{\tt{0/0}} (0)
+                edge[bend left] node{\tt{1/1}} (5)
+                (5) edge node[swap]{\tt{0/0}} (0)
+                edge[bend left] node{\tt{1/0}} (1);
+                \draw[semithick,arrows = {-Stealth[left,round]},shorten >=1pt] ([xshift=-2pt]0.north) -- node[draw=white,left=2pt]{\footnotesize\tt{1/0}} ([xshift=-2pt]1.south);
+                \draw[semithick,arrows = {-Stealth[left,round]},shorten >=1pt] ([xshift=2pt]1.south) -- node[draw=white,right=2pt]{\footnotesize\tt{0/0}} ([xshift=2pt]0.north);
+            \end{tikzpicture}
+        \end{center}
+    \end{solution}
+
+    \question[5] 请设计一个ADC用EEPROM存储被读写的FPGA电路的连接框图.
+    \begin{solution}
+        \answers
+        \begin{center}
+            \begin{circuitikz}
+                \tikzset{every node/.style={font=\sffamily\scriptsize}}
+                \ctikzset{multipoles/font={\sffamily\scriptsize}}
+                \draw (0,0) node[dipchip,
+                num pins=8,
+                external pins width=0.0,hide numbers,
+                no topmark](E){\textbf{EEPROM}};
+                \node[left] at (E.pin 8) {SDA};
+                \node[left] at (E.pin 5) {SCL};
+        
+                \ctikzset{multipoles/dipchip/width=2}
+                \draw (-0.56,0) node[dipchip,
+                num pins=16,
+                external pins width=0.0,hide numbers,
+                no topmark](ADC){}
+                (-1.4,0) node{\textbf{ADC}};
+                \node[left] at (ADC.pin 9) {DATA1[7:0]};
+                \node[left] at (ADC.pin 10) {CLK1};
+        
+                \draw (5,0) node[dipchip,
+                num pins=16,
+                external pins width=0.0,hide numbers,
+                no topmark](W){\textbf{EEPROM\_WR{\color{white}space}}};
+                \node[right] at (W.pin 7) {CLK1};
+                \node[right] at (W.pin 3) {SDA};
+                \node[right] at (W.pin 6) {SCL};
+                \node[right] at (W.pin 8) {DATA1[7:0]};
+                \node[left] at (W.pin 16) {DATA0[7:0]};
+                \node[left] at (W.pin 15) {RESET};
+                \node[left] at (W.pin 14) {CLK0};
+                \node[left] at (W.pin 13) {RD};
+                \node[left] at (W.pin 12) {WR};
+                \node[left] at (W.pin 11) {ADDR[7:0]};
+                \node[left] at (W.pin 9) {ACK};
+        
+                \draw (11,0) node[dipchip,
+                num pins=16,
+                external pins width=0.0,hide numbers,
+                no topmark](S){\textbf{\sffamily\scriptsize Signal}};
+                \node[right] at (S.pin 1) {DATA0[7:0]};
+                \node[right] at (S.pin 2) {RESET};
+                \node[right] at (S.pin 3) {CLK0};
+                \node[right] at (S.pin 4) {RD};
+                \node[right] at (S.pin 5) {WR};
+                \node[right] at (S.pin 6) {ADDR[7:0]};
+                \node[right] at (S.pin 8) {ACK};
+                \node[left] at (S.pin 14) {CLK0};
+        
+                \draw[dashed] (W.north west)++(0,4pt) rectangle ($(S.south east)+(0,-4pt)$)
+                    node at ($0.5*(W.pin 10)+0.5*(S.pin 7)$) {\textbf{FPGA}};
+        
+                \begin{scope}
+                    \tikzset{>={Stealth[round]},shorten >=1pt,
+                    decoration={
+                    markings,
+                    mark=at position 0.5 with {\arrow{>}}}}
+                    \draw[<->] (E.pin 8) -- (W.pin 3);
+                    \draw[postaction={decorate}](W.pin 6)-- (E.pin 5);
+                    \draw[postaction={decorate}](S.pin 2)-- (W.pin 15);
+                    \draw[postaction={decorate}](S.pin 3)-- (W.pin 14);
+                    \draw[postaction={decorate}](S.pin 4)-- (W.pin 13);
+                    \draw[postaction={decorate}](S.pin 5)-- (W.pin 12);
+                    \draw[->](S.pin 14)++(1,0) -- (S.pin 14);
+                    \draw[postaction={decorate}](W.pin 9)-- (S.pin 8);     
+                    \draw[postaction={decorate}](W.pin 7)-- (ADC.pin 10);  
+                    \draw (W.pin 1)--node[above]{VCC} (ADC.pin 16);
+                \end{scope}
+        
+                \tikzset{
+                Pfeil/.style args={#1}{
+                to path={let \p1 = ($(\tikztotarget)-(\tikztostart)$),
+                \n1 = {int(mod(scalar(atan2(\y1,\x1))+360, 360))}, % calculate angle in range [0,360)
+                \n2 = {veclen(\x1,\y1)} in \pgfextra{\typeout{\n1,\n2,\x1,\y1}} (\tikztotarget)
+                node[
+                #1 arrow, % single arrow,
+                #1 arrow head extend=1ex,
+                draw,
+                minimum height=\n2-\pgflinewidth,
+                % minimum width=5ex, 
+                % minimum height=13ex, 
+                inner sep=1ex,
+                %text height=1ex,
+                %text depth=0ex,
+                rotate=\n1,% 
+                anchor=east,% ehgemals: tip bei single / tip 1 bei double arrow
+                ]{}
+                }},
+                Pfeil/.default=single
+                }
+        
+                \draw (W.pin 16) edge[Pfeil=double] (S.pin 1);
+                \draw (W.pin 11) edge[Pfeil=double] (S.pin 6);
+                \draw (ADC.pin 9) edge[Pfeil=single] (W.pin 8);
+        
+                \ctikzset{resistors/scale=0.5}
+                \coordinate (1) at ($(ADC.pin 16)+(0.7,0)$) ;
+                \coordinate (2) at ($(W.pin 1)+(-0.7,0) $);
+                \coordinate (3) at ($(E.pin 8)+(0.7,0) $);
+                \coordinate (4) at ($(W.pin 3)+(-0.7,0) $);
+                \coordinate (5) at ($(W.pin 6)+(-0.7,0) $);
+                \draw[color=dr] (1) to [R,*-*] (3);
+                \draw[color=dr] (2) to [R,*-] (4);
+                \draw[color=dr] (4) to [short,-*] (5);
+            \end{circuitikz}
+        \end{center}
+        \remark 电阻元件的颜色是circitikz宏包配置的,更改电路元件的颜色需要额外设置,不以环境为转移.
+    \end{solution}
+\end{questions}
+
+\group{分析题}{本大题共1小题,共5分}
+\begin{questions}[rs]
+    \question[5] 请分析傅里叶变换的不确定性对信号分析的影响.
+    \begin{solution}
+        \ans 不知道.
+
+        \sj 有没有一种信号在空域和频域上的分布都很广泛呢?有的,最简单的例子就是噪声信号.一段纯粹的白噪声,其傅立叶变换也仍然是噪声,所以它在空域和频域上的分布都是广泛的.如果用信号处理的语言来说,这就说明「噪声本身是不可压缩的」.这并不违反直觉,因为信号压缩的本质就是通过挖掘信息的结构和规律来对它进行更简洁的描述,而噪声,顾名思义,就是没有结构和规律的信号,自然也就无从得以压缩.
+
+        \sj 另一方面,有没有一种信号在空域和频域上的分布都很简单呢?换句话说,存不存在一个函数,它在空间上只分布在很少的几个区域内,并且在频域上也只占用了很少的几个频率呢?(零函数当然满足这个条件,所以下面讨论的都是非零函数.)
+
+        \sj 答案是不存在.这就是所谓的Uncertainty Principle(不确定性原理)
+    \end{solution}
+\end{questions}
+
+\group{程序题}{本大题共1小题,共5分}
+\begin{questions}[rs]
+    \question[5]请你用大脑编译下面这段\LaTeX{}代码,并绘制出编译结果.
+    \begin{lstlisting}[title=题六1代码,language=tex,basicstyle={\ttfamily\footnotesize}]
+\tdplotsetmaincoords{70}{110}
+\begin{tikzpicture}[tdplot_main_coords,scale=5,semithick]
+\pgfmathsetmacro{\r}{.8}
+\pgfmathsetmacro{\R}{1}
+\pgfmathsetmacro{\O}{45}
+\pgfmathsetmacro{\i}{60}
+\pgfmathsetmacro{\f}{35}
+\pgfmathsetmacro{\a}{110}
+
+\coordinate (O) at (0,0,0);
+\node[left,label=170:\scriptsize 地心 $O$] at (O) {};
+\node[below] at (10:\r) {\scriptsize 赤道};
+\fill (0.6,0.6,0.5) circle [radius=0.4pt,fill=black] node[below] {\scriptsize $T$};
+\draw[dashed] (O) --node[above] {\scriptsize $R$} (0.6,0.6,0.5) ;
+
+\draw [arrows={-Stealth[inset=0pt, angle=25:10pt]}] (O) -- (2.2,0,0) node[anchor=north east] {\scriptsize $y$};
+\draw [arrows={-Stealth[inset=0pt, angle=25:10pt]}] (O) -- (0,-1.1,0) node[anchor=north west] {\scriptsize $x$};
+\draw [arrows={-Stealth[inset=0pt, angle=25:10pt]}] (O) -- (0,0,1.2) node[anchor=west] {\scriptsize $z$ 北极};
+
+\tdplotdrawarc[dashed,very thick]{(O)}{\r}{\a}{\a+180}{}{}
+\tdplotdrawarc[very thick]{(O)}{\r}{\a-180}{\a}{}{}
+\draw[very thick] (O) ellipse [x radius=.8cm,y radius=.73cm];
+\node[rotate=48] at (0,-0.75,0.4) {\scriptsize 本初子午线};
+
+\tdplotsetrotatedcoords{\O}{0}{0}
+
+\draw [tdplot_rotated_coords,dashed] (-\R,0,0) -- (\R,0,0);
+\fill[tdplot_rotated_coords] (\R,0,0) circle [radius=0.4pt,fill=black] node[right]{\scriptsize 近地点};
+\fill[tdplot_rotated_coords] (\r,0,0) circle [radius=0.4pt,fill=black] node[below left=2pt]{\scriptsize 升交点};
+\fill[tdplot_rotated_coords] (-\r,0,0) circle [radius=0.4pt,fill=black] node[above right]{\scriptsize 降交点};
+
+\tdplotdrawarc[-Stealth]{(O)}{.33*\r}{-90}{\O}{anchor=north}{\scriptsize $\Omega$}
+
+\tdplotsetrotatedcoords{-\O}{\i}{0}
+\tdplotdrawarc[tdplot_rotated_coords]{(O)}{\R}{-41}{239}{}{}
+\tdplotdrawarc[tdplot_rotated_coords,dashed]{(O)}{\R}{239}{319}{}{}
+\tdplotdrawarc[tdplot_rotated_coords,dashed,very thick]{(O)}{\r}{34}{164}{}{}
+\fill[tdplot_rotated_coords] (110:\R) circle [radius=0.4pt,fill=black] node[below right,inner sep=1pt]{\scriptsize $S_0$};
+\fill[tdplot_rotated_coords] (130:\R) circle [radius=0.4pt,fill=black] node[below right,inner sep=1pt]{\scriptsize $S_1$};
+\draw[tdplot_rotated_coords,dashed] (O) --node[above] {\scriptsize $r$} (110:\R) ;
+\tdplotdrawarc[tdplot_rotated_coords,-Stealth]{(O)}{\R}{30}{40}{anchor=north}{}
+\tdplotdrawarc[tdplot_rotated_coords,-Stealth]{(O)}
+{\R}{225}{235}{anchor=north}{}
+\tdplotdrawarc[tdplot_rotated_coords,-Stealth]{(O)}{.33*\r}{90}{110}{below right,inner sep=1pt}{\scriptsize $\nu$}
+
+\tdplotsetrotatedcoords{-\O+10}{\i}{0}
+\tdplotdrawarc[tdplot_rotated_coords]{(O)}{\R}{-52}{242}{}{}
+\tdplotdrawarc[tdplot_rotated_coords,dashed]{(O)}{\R}{242}{308}{}{}
+\fill[tdplot_rotated_coords] (110:\R) circle [radius=0.4pt,fill=black] node[below right,inner sep=1pt]{\scriptsize $S_2$};
+\tdplotdrawarc[tdplot_rotated_coords,-Stealth]{(O)}{\R}
+{30}{40}{anchor=north,rotate=20}{\scriptsize 卫星轨道}
+\tdplotdrawarc[tdplot_rotated_coords,-Stealth]{(O)}{\R}
+{215}{225}{anchor=north}{}
+
+\tdplotsetrotatedcoords{\O}{-90}{0}
+\coordinate (Shift) at (\O:\r);
+
+\tdplotsetrotatedcoordsorigin{(Shift)}
+\tdplotdrawarc[tdplot_rotated_coords,-Stealth]{(Shift)}{.1*\r}
+{89}{90-\i}{anchor=south west}{\scriptsize $i$}
+\end{tikzpicture}
+    \end{lstlisting}
+    \begin{solution}
+        \answers
+        \begin{center}
+            \tdplotsetmaincoords{70}{110}
+            \begin{tikzpicture}[tdplot_main_coords,scale=5,semithick]
+                \pgfmathsetmacro{\r}{.8}
+                \pgfmathsetmacro{\R}{1}
+                \pgfmathsetmacro{\O}{45} % right ascension of ascending node [deg]
+                \pgfmathsetmacro{\i}{60} % inclination [deg]
+                \pgfmathsetmacro{\f}{35} % true anomaly [deg]
+                \pgfmathsetmacro{\a}{110} % true anomaly [deg]
+
+                % 坐标原点
+                \coordinate (O) at (0,0,0);
+                \node[left,label=170:\scriptsize 地心 $O$] at (O) {};
+                \node[below] at (10:\r) {\scriptsize 赤道};
+                \fill (0.6,0.6,0.5) circle [radius=0.4pt,fill=black] node[below] {\scriptsize $T$};
+                \draw[dashed] (O) --node[above] {\scriptsize $R$} (0.6,0.6,0.5) ;
+
+                % 坐标系
+                \draw [arrows={-Stealth[inset=0pt, angle=25:10pt]}] (O) -- (2.2,0,0) node[anchor=north east] {\scriptsize $y$};
+                \draw [arrows={-Stealth[inset=0pt, angle=25:10pt]}] (O) -- (0,-1.1,0) node[anchor=north west] {\scriptsize $x$};
+                \draw [arrows={-Stealth[inset=0pt, angle=25:10pt]}] (O) -- (0,0,1.2) node[anchor=west] {\scriptsize $z$ 北极};
+
+                %   \node at (0,-\r,0) [left,text width=4em] {Ecliptic Plane};
+
+                \tdplotdrawarc[dashed,very thick]{(O)}{\r}{\a}{\a+180}{}{}
+                \tdplotdrawarc[very thick]{(O)}{\r}{\a-180}{\a}{}{}				% 圆
+                \draw[very thick] (O) ellipse [x radius=.8cm,y radius=.73cm];		% 椭圆
+                \node[rotate=48] at (0,-0.75,0.4) {\scriptsize 本初子午线};
+
+                \tdplotsetrotatedcoords{\O}{0}{0}		% 旋转坐标系
+
+                \draw [tdplot_rotated_coords,dashed] (-\R,0,0) -- (\R,0,0);
+                \fill[tdplot_rotated_coords] (\R,0,0) circle [radius=0.4pt,fill=black] node[right]{\scriptsize 近地点};
+                \fill[tdplot_rotated_coords] (\r,0,0) circle [radius=0.4pt,fill=black] node[below left=2pt]{\scriptsize 升交点};
+                \fill[tdplot_rotated_coords] (-\r,0,0) circle [radius=0.4pt,fill=black] node[above right]{\scriptsize 降交点};
+
+                \tdplotdrawarc[-Stealth]{(O)}{.33*\r}{-90}{\O}{anchor=north}{\scriptsize $\Omega$} % 升交点赤经
+
+                \tdplotsetrotatedcoords{-\O}{\i}{0}
+                \tdplotdrawarc[tdplot_rotated_coords]{(O)}{\R}{-41}{239}{}{}
+                \tdplotdrawarc[tdplot_rotated_coords,dashed]{(O)}{\R}{239}{319}{}{}
+                \tdplotdrawarc[tdplot_rotated_coords,dashed,very thick]{(O)}{\r}{34}{164}{}{}
+                \fill[tdplot_rotated_coords] (110:\R) circle [radius=0.4pt,fill=black] node[below right,inner sep=1pt]{\scriptsize $S_0$};
+                % \fill[tdplot_rotated_coords] (0:\R) circle [radius=0.4pt,fill=black] node[below right,inner sep=1pt]{\scriptsize $x''$};
+                % \fill (0:\R) circle [radius=0.4pt,fill=black] node[below right,inner sep=1pt]{\scriptsize $x$};
+                \fill[tdplot_rotated_coords] (130:\R) circle [radius=0.4pt,fill=black] node[below right,inner sep=1pt]{\scriptsize $S_1$};
+                \draw[tdplot_rotated_coords,dashed] (O) --node[above] {\scriptsize $r$} (110:\R) ;
+                \tdplotdrawarc[tdplot_rotated_coords,-Stealth]{(O)}{\R}{30}{40}{anchor=north}{}
+                \tdplotdrawarc[tdplot_rotated_coords,-Stealth]{(O)}{\R}{225}{235}{anchor=north}{}
+                \tdplotdrawarc[tdplot_rotated_coords,-Stealth]{(O)}{.33*\r}{90}{110}{below right,inner sep=1pt}{\scriptsize $\nu$}
+
+                \tdplotsetrotatedcoords{-\O+10}{\i}{0}
+                \tdplotdrawarc[tdplot_rotated_coords]{(O)}{\R}{-52}{242}{}{}
+                \tdplotdrawarc[tdplot_rotated_coords,dashed]{(O)}{\R}{242}{308}{}{}
+                \fill[tdplot_rotated_coords] (110:\R) circle [radius=0.4pt,fill=black] node[below right,inner sep=1pt]{\scriptsize $S_2$};
+                \tdplotdrawarc[tdplot_rotated_coords,-Stealth]{(O)}{\R}{30}{40}{anchor=north,rotate=20}{\scriptsize 卫星轨道}
+                \tdplotdrawarc[tdplot_rotated_coords,-Stealth]{(O)}{\R}{215}{225}{anchor=north}{}
+                \tdplotsetrotatedcoords{\O}{-90}{0}
+                \coordinate (Shift) at (\O:\r);
+
+                \tdplotsetrotatedcoordsorigin{(Shift)}
+                \tdplotdrawarc[tdplot_rotated_coords,-Stealth]{(Shift)}{.1*\r}{89}{90-\i}{anchor=south west}{\scriptsize $i$}
+            \end{tikzpicture}
+        \end{center}
+    \end{solution}
+\end{questions}
+
+\group{计算题}{本大题共4小题,共40分}
+\begin{questions}[rst]
+    \question[10] 设计一个巴特沃斯模拟高通滤波器,要求其通带边界频率为10Hz,阻带边界频率为100Hz,通带最大衰减1dB,阻带最小衰减20dB.
+    \begin{subquestions}
+        \subquestion[3] 求出对应的低通滤波器阶数$N$,和归一化3dB截止频率$\lambda_c$;
+        \subquestion[3] 写出关于通带截止频率归一化的低通系统函数$Q(p)$;
+        \subquestion[4] 计算高通滤波器系统函数$H_{HP}(s)$.
+    \end{subquestions}
+    \hint 低通到高通的映射关系$p=\frac{\lambda_{p}\Omega_{ph}}{s}$,频率映射关系$\lambda=-\frac{\lambda_{p}\Omega_{ph}}{\Omega}$.二阶和三阶巴特沃斯3dB频率归一化低通滤波器的系统函数为$G_{2}(p)=\frac{1}{p^{2}+1.4142 p+1}, G_{3}(p)=\frac{1}{p^{3}+2 p^{2}+2 p+1}$.
+    \begin{solution}[5cm]
+        \answers (1) 对应的低通滤波的通带边界频率为10Hz,阻带边界频率为100Hz,因此低通滤波器的\par
+        $\lambda_{s p}=\frac{\lambda_{s}}{\lambda_{p}}=10, \quad k_{s p}=\sqrt{\frac{10^{\alpha_{s} 10}-1}{10^{\alpha_{p} / 10}-1}}=19.5538\,;$\score{1}{1}
+        $N=\frac{\lg k_{s p}}{\lg \lambda_{s p}}=1.2912\,, 取N=2\,;$\score{1}{2}
+        $$\lambda_{c}=\lambda_{p}\left(10^{0.1 a_{p}}-1\right)^{-\frac{1}{2 N}}=1.4019\quad 或\quad \lambda_{c}=\lambda_{s}\left(10^{0.1 a_{s}}-1\right)^{-\frac{1}{2 N}}=3.1702\,.$$\score{1}{3}
+
+        \sj (2) $$
+        Q(p)=\left.G\left(p^{\prime}\right)\right|_{p^{\prime}=p / \lambda_{c}}=\frac{\lambda_{c}^{2}}{p^{2}+1.4142 p \lambda_{c}+\lambda_{c}^{2}}=\frac{1.965}{p^{2}+1.983 p+1.965},\quad \lambda_{c}=1.4019\,.
+        $$\score{3}{6}
+
+        \sj (3)
+        $$
+        \begin{aligned}
+        H_{H P}(s) &=\left.Q(p)\right|_{p=\frac{\lambda_{p} \Omega_{p h}}{s}}\\
+        &=\frac{\lambda_{c}^{2}}{\left(\frac{\Omega_{p h}}{s}\right)^{2}+1.4142 \times \lambda_{c}\left(\frac{\Omega_{p h}}{s}\right)+\lambda_{c}^{2}}\\
+        &=\frac{1}{\left(\frac{\Omega_{p h}}{\lambda_{c} s}\right)^{2}+1.4142 \times\left(\frac{\Omega_{p h}}{\lambda_{c} s}\right)+1} \\
+        &=\frac{s^{2}}{200874+633.83 s+s^{2}}, \quad \Omega_{p h}=2 \mpi \cdot 100\,.
+        \end{aligned}
+        $$\score{4}{10}
+
+        \remark 题(2)中$\lambda_c$不能通过求算$\Omega_c=\Omega_p(10^{0.1\alpha_p}-1)^{-\frac{1}{2N}}$或$\Omega_c=\Omega_s(10^{0.1\alpha_s}-1)^{-\frac{1}{2N}}$,然后代入$\lambda=-\frac{\lambda_{p}\Omega_{ph}}{\Omega}$计算.这样会得到$\lambda_{c}=\lambda_{p}\left(10^{0.1 a_{p}}-1\right)^{\frac{1}{2 N}}$或$\lambda_{c}=\lambda_{s}\left(10^{0.1 a_{s}}-1\right)^{\frac{1}{2 N}}$.原因是频率映射关系$\lambda=-\frac{\lambda_{p}\Omega_{ph}}{\Omega}$是线性映射,只有$0,\Omega_{ph},\Omega_{sh},-\infty,+\infty$这些位置是对应的,其他频率并不对应;而且$\Omega_c$计算公式只针对巴特沃斯低通滤波器成立.
+    \end{solution}
+
+    \question[10] 假定概率密度$f(\boldsymbol{z} ; \theta)$满足正则条件:
+    $$E\left\{\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}\right\}=0.$$
+    证明任何无偏估计量$\hat{\theta}$的方差满足
+    $$\operatorname{Var}(\hat{\theta})=E\left[(\theta-\hat{\theta})^{2}\right] \geqslant \frac{1}{E\left\{\left[\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}\right]^{2}\right\}}=-\frac{1}{E\left\{\frac{\partial^{2} \ln f(\boldsymbol{z} ; \theta)}{\partial \theta^{2}}\right\}},$$
+    当且仅当$$\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}=(\hat{\theta}-\theta) k(\theta)$$时,%
+    上式的等号成立.
+    
+    \begin{solution}
+    \proof 设$\hat{\theta}$是无偏估计,则有$E(\hat{\theta}-\theta)=0$,即
+    $$E(\hat{\theta}-\theta)=\int_{-\infty}^{\infty}(\hat{\theta}-\theta) f(\boldsymbol{z} ; \theta) \mathrm{d} z=0,$$
+    对$\theta$求导,得到(正则条件保证积分号和微分号可交换)
+    $$\frac{\partial}{\partial \theta} \int_{-\infty}^{\infty}(\hat{\theta}-\theta) f(\boldsymbol{z} ; \theta) \mathrm{d} z=\int_{-\infty}^{\infty} \frac{\partial}{\partial \theta}[(\hat{\theta}-\theta) f(\boldsymbol{z} ; \theta)] \mathrm{d} z=0\,,$$
+    进一步有
+    $$-\int_{-\infty}^{\infty} f(\boldsymbol{z} ; \theta) \mathrm{d} z+\int_{-\infty}^{\infty}\frac{\partial f(\boldsymbol{z} ; \theta)}{\partial \theta}(\hat{\theta}-\theta) \mathrm{d} z=0.$$
+    由微分法则$(\ln g(x))^{\prime}=\frac{g^{\prime}(x)}{g(x)}$和$\int_{-\infty}^{\infty} f(\boldsymbol{z} ; \theta) \mathrm{d} z=1$可以将上式写成
+    $$\int_{-\infty}^{\infty}\frac{\partial\ln f(\boldsymbol{z} ; \theta)}{\partial \theta} f(\boldsymbol{z} ; \theta)(\hat{\theta}-\theta) \mathrm{d} z=1,$$
+    也可表示为$$\int_{-\infty}^{\infty} \frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta} \sqrt{f(\boldsymbol{z} ; \theta)} \sqrt{f(\boldsymbol{z} ; \theta)}(\hat{\theta}-\theta) \mathrm{d} z=1,$$
+    利用Cauchy-Schwartz不等式
+    $$\left[\int_{-\infty}^{\infty} f(x) g(x) \mathrm{d} x\right]^{2} \leqslant \int_{-\infty}^{\infty} f^{2}(x) \mathrm{d} x \int_{-\infty}^{\infty} g^{2}(x) \mathrm{d} x,$$
+    有下列不等式成立:
+    $$1 \leqslant \underbrace{ \int_{-\infty}^{\infty}\left[\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}\right]^{2} f(\boldsymbol{z} ; \theta) \mathrm{d} z}_{E\left\{\left[\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}\right]^{2}\right\} \triangleq I(\theta)}\times \underbrace{\int_{-\infty}^{\infty}(\hat{\theta}-\theta)^{2} f(\boldsymbol{z} ; \theta) \mathrm{d} z}_{\operatorname{Var}(\hat{\theta})},$$
+    当且仅当$f(x)=k g(x)$时,不等式等号成立.
+    
+    \sj 可知, CRLB达到的条件,即是等号成立的条件:
+    $$\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}=k(\theta)(\hat{\theta}-\theta),$$
+    此外有$$E\left\{\left[\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}\right]^{2}\right\}=-E\left\{\frac{\partial^{2} \ln f(\boldsymbol{z} ; \theta)}{\partial \theta^{2}}\right\},$$证明如下:
+    $$\begin{aligned}
+        \int_{\{Z\}} f(\boldsymbol{z} ; \theta) \mathrm{d}z=1 &\xLongrightarrow{对等式两边求导} \int_{\{Z\}} \frac{\partial f(\boldsymbol{z} ; \theta)}{\partial \theta} \mathrm{d} z=\int_{\{Z\}} \frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta} f(\boldsymbol{z} ; \theta) \mathrm{d} z=0\\
+        &\xLongrightarrow{对等式两边再次求导}\int_{\{Z\}} \frac{\partial^{2} \ln f(\boldsymbol{z} ; \theta)}{\partial \theta^{2}} f(\boldsymbol{z} ; \theta) \mathrm{d} z+\\
+        &\hspace{7em}\int_{\{Z\}}\left[\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}\right]^{2} f(\boldsymbol{z} ; \theta) \mathrm{d} z=0\\
+        &\Rightarrow E\left\{\left[\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}\right]^{2}\right\}=-E\left\{\frac{\partial^{2} \ln f(\boldsymbol{z} ; \theta)}{\partial \theta^{2}}\right\}.
+    \end{aligned}
+    $$\proofover
+    
+    \remark[说明](1) 定理成立的条件.
+    \begin{compactitem}
+        \item 定理成立的条件是求导和积分可交换;
+        \item 如果积分限与被估计量$\theta$有关,则求导和积分不能交换;
+        \item CRLB定理不成立的情况:概率密度非零的区间与被估计量有关,如:概率密度为$(0,\theta)$上的均匀分布,而$\theta$为被估计量.
+    \end{compactitem}
+    
+    (2) 正则条件保证了上述要求,即
+    $$0=E\left\{\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}\right\}=\int_{-\infty}^{+\infty}\frac{\partial \ln f(\boldsymbol{z}  ; \theta)}{\partial \theta} f(\boldsymbol{z}  ; \theta) \mathrm{d} z =\int_{-\infty}^{\infty} \frac{\partial f(\boldsymbol{z} ; \theta)}{\partial \theta}\mathrm{d}  z ,$$
+    又$\frac{\partial}{\partial \theta} \int_{-\infty}^{\infty} f(\boldsymbol{z} ; \theta) \mathrm{d}z=0$,故
+    $$\int_{-\infty}^{\infty} \frac{\partial f(\boldsymbol{z} ; \theta)}{\partial \theta} \mathrm{d} z=\frac{\partial}{\partial \theta} \int_{-\infty}^{\infty} f(\boldsymbol{z} ; \theta) \mathrm{d} z.$$
+    
+    (3) $I(\theta)$成为Fisher信息\,$I$越大,越有可能得到好的估计.
+    
+    (4) 如果有效估计量存在,则该有效估计量一定是最大似然估计.因为如果有效估计量存在,这表明满足
+    $$\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}=k(\theta)(\hat{\theta}-\theta),$$
+    而最大似然估计满足
+    $$\left.\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}\right|_{\theta=\hat{\theta}_{\text{ml}}}=0,$$
+    所以有$k\left(\hat{\theta}_{\text{ml}}\right)\left(\hat{\theta}-\hat{\theta}_{\text{ml}}\right)=0$,即$\hat{\theta}=\hat{\theta}_{\text{ml}}$.
+    
+    (5) 如果有效估计量不存在,则最大似然估计的方差不一定是最小的.
+    \end{solution}
+
+    \question[10]设
+	$$
+		\boldsymbol{A}=\left[\lk\begin{array}{llr}
+				3 & 1 & -1 \\
+				1 & 2 & -1 \\
+				2 & 1 & 0
+			\end{array}\right]\,,
+	$$
+	求$\mathrm{e}^{\symbf{A}t}$(其中$t$为参数).
+
+    \begin{solution}
+    \answers
+
+    \method 通过矩阵函数的Jordan表示计算.因为$$
+		|\lambda \boldsymbol{I}-\boldsymbol{A}|=\left|\lk\begin{array}{ccc}
+			\lambda-3 & -1        & 1       \\
+			-1        & \lambda-2 & 1       \\
+			-2        & -1        & \lambda
+		\end{array}\right|=(\lambda-1)(\lambda-2)^{2}\,,
+	$$
+	显然 $n_{1}=1, n_{2}=2$,于是 $\boldsymbol{A}$ 的Jordan标准形为
+	$$
+		\boldsymbol{J}=\left[\lk\begin{array}{lll}
+				1 & 0 & 0 \\
+				0 & 2 & 1 \\
+				0 & 0 & 2
+			\end{array}\right]\,.
+	$$
+	由于对应 $\lambda_{1}=1$ 的特征向量为 $(0,1,1)^{\mathrm{T}}$, 而对应 $\lambda_{2}=2$ 的线性无关的特征向量只有一个$(1,0,1)^{\mathrm{T}}$,为此再求出它的一个广义特征向量 $(1,1,1)^{\mathrm{T}}$. 于是非奇异矩阵 $\symbf{T}$ 取为
+	$$
+		\boldsymbol{T}=\left[\lk\begin{array}{lll}
+				0 & 1 & 1 \\
+				1 & 0 & 1 \\
+				1 & 1 & 1
+			\end{array}\right], \quad \boldsymbol{T}^{-1}=\left[\lk\begin{array}{rrr}
+				-1 & 0  & 1  \\
+				0  & -1 & 1  \\
+				1  & 1  & -1
+			\end{array}\right]
+	$$
+	容易看出
+	$$
+		\begin{array}{l}
+			f\left(\boldsymbol{J}_{1}\left(\lambda_{1}\right)\right)=f\left(\lambda_{1}\right)=\mathrm{e}^{t}\,, \\
+			f\left(\boldsymbol{J}_{2}\left(\lambda_{2}\right)\right)=\left[\begin{array}{cc}
+					\mathrm{e}^{2 t} & t \mathrm{e}^{2 t} \\
+					0                & \mathrm{e}^{2 t}
+				\end{array}\right]\,,
+		\end{array}
+	$$
+	所以
+	$$
+		\begin{aligned}
+			\mathrm{e}^{\symbf{A} t} & =\boldsymbol{T} \cdot \operatorname{diag}\left(f\left(\boldsymbol{J}_{1}\left(\lambda_{1}\right)\right), f\left(\boldsymbol{J}_{2}\left(\lambda_{2}\right)\right)\right) \cdot \boldsymbol{T}^{-1} \\
+			                         & =\left[\lk\begin{array}{ccc}
+					0 & 1 & 1 \\
+					1 & 0 & 1 \\
+					1 & 1 & 1
+				\end{array}\right]\left[\lk\begin{array}{ccc}
+					\mathrm{e}^{t} & 0                & 0                  \\
+					0              & \mathrm{e}^{2 t} & t \mathrm{e}^{2 t} \\
+					0              & 0                & \mathrm{e}^{2 t}
+				\end{array}\right]\left[\lk\begin{array}{rrr}
+					-1 & 0  & 1  \\
+					0  & -1 & 1  \\
+					1  & 1  & -1
+				\end{array}\right]                                                                    \\
+			                         & =\left[\lk\begin{array}{ccc}
+					(t+1) \mathrm{e}^{2 t}                 & t \mathrm{e}^{2 t} & -t \mathrm{e}^{2 t}               \\
+					-\mathrm{e}^{t}+\mathrm{e}^{2 t}       & \mathrm{e}^{2 t}   & \mathrm{e}^{t}+\mathrm{e}^{2 t}   \\
+					-\mathrm{e}^{t}+(t+1) \mathrm{e}^{2 t} & t \mathrm{e}^{2 t} & \mathrm{e}^{t}-t \mathrm{e}^{2 t}
+				\end{array}\right]\,.
+		\end{aligned}
+    $$
+
+    \method 通过矩阵函数的多项式表示计算. $\symbf{A}$ 的最小多项式
+	$$
+		\varphi_{\symbf{A}}(x)=(x-1)(x-2)^{2}\,.
+	$$
+	则
+	$$
+		p(x)=a_{0}+a_{1} x+a_2 x^2\,, \quad p'(x)=a_{1}+2a_2 x\,,
+	$$
+	把 $f(1),f(2), f^{\prime}(2)$ 代入上式
+	$$
+		f(1)=p(1)=a_0+a_1+a_2\,, f(2)=p(2)=a_{0}+2 a_{1}+4a_2\,, f^{\prime}(2)=p^{\prime}(2)=a_{1}+4a_2\,,
+	$$
+	解得
+	$$
+		a_{0}=4f(1)-3f(2)+2 f^{\prime}(2)\,, \quad a_{1}=-4f(1)+4f(2)-3f'(2)\,, \quad a_2=f(1)-f(2)+f^{\prime}(2)\,.
+	$$
+    
+    \sj 于是矩阵函数 $f(\boldsymbol{A})$ 的多项式表示为
+    $$
+    \begin{aligned}
+        f(\boldsymbol{A}) =&p(\boldsymbol{A})=a_{0}\symbf{E} +a_{1}\symbf{A}+a_2 \symbf{A}^2 \\
+        =& \left[4f(1)-3f(2)+2 f^{\prime}(2)\right] \boldsymbol{E}+\left[-4f(1)+4f(2)-3f'(2)\right]\boldsymbol{A}+\\
+        &\left[f(1)-f(2)+f^{\prime}(2)\right]\symbf{A}^2\\
+    \end{aligned}
+	$$
+	由$f(x)=\mathrm{e}^{xt}$得$f(1)=\mathrm{e}^t,f(2)=\mathrm{e}^{2 t}, f^{\prime}(2)=t \mathrm{e}^{2 t}$,代入上式可得
+	$$
+		\mathrm{e}^{\symbf{A} t}=\left[\lk\begin{array}{ccc}
+            (t+1) \mathrm{e}^{2 t}                 & t \mathrm{e}^{2 t} & -t \mathrm{e}^{2 t}               \\
+            -\mathrm{e}^{t}+\mathrm{e}^{2 t}       & \mathrm{e}^{2 t}   & \mathrm{e}^{t}+\mathrm{e}^{2 t}   \\
+            -\mathrm{e}^{t}+(t+1) \mathrm{e}^{2 t} & t \mathrm{e}^{2 t} & \mathrm{e}^{t}-t \mathrm{e}^{2 t}
+        \end{array}\right]\,.
+	$$
+    \end{solution}
+
+    \question[10]某连续时间系统如下图所示,输入信号$f(t)$被抽样后,通过一个单位冲激响应为$h(t)$的系统,输出$y(t)$.已知$f(t) \leftrightarrow F(j \omega)=G_{\mpi / 2}(\omega), h(t)=2 G_{1}(t)$. $\delta_T(t)$为单位强度周期脉冲串,且$T=2$.
+    \begin{subquestions}
+        \subquestion[4] 请画出 $\omega \in(-2 \mpi, 2 \mpi)$ 区间上 $y(t)$ 的频谱;
+        \subquestion[6] 请设计从 $y(t)$ 恢复 $f(t)$ 的方案.
+    \end{subquestions}
+    \begin{center}
+        \begin{circuitikz}
+            \draw (0,0) node[mixer,scale=0.6](m) {}
+                  (m.1) -- +(-1,0) node[left] {$f(t)$}
+                  (m.2) -- +(0,-1) node[below]{$\delta_T(t)$}
+                  (m.3) -- node[above]{$f_s(t)$} +(1,0) coordinate (a)
+                  node[rectangle,draw,right](t){$h(t)$}
+                  (t.east) -- +(1,0) coordinate (b) node[right]{$y(t)$}
+                    (m.1) node[inputarrow]{}
+                    (m.2) node[inputarrow,rotate=90]{}
+                    (a) node[inputarrow]{}
+                    (b) node[inputarrow]{};
+                    % (m.4) node[above]{$A_M$};
+        \end{circuitikz}
+        
+        \footnotesize 题七4图
+    \end{center}
+
+    \begin{solution}
+        \thought 通过分析输入与输出的频谱来设计滤波器.
+        \answers (1) $y(t)$的频谱$F(j\omega)$如下图所示.
+        \begin{center}
+            \begin{tikzpicture}
+                \pgfplotsset{width=5cm,height=3.5cm}
+                \begin{axis}[
+                    axis y line=center,
+                    axis x line=middle,
+                    xlabel=$\omega$,xlabel shift=-20pt,
+                    ylabel=$F(j\omega)$,
+                    xmax=3,
+                    xmin=-3,
+                    ymax=3,
+                    ymin=0,
+                    xtick={-2,0,2},xticklabels={$-\frac{\mpi}{4}$,0,$\frac{\mpi}{4}$},
+                    ytick=\empty,
+                    hide obscured x ticks=false,
+                    every inner x axis line/.append style={-Stealth},
+                    every inner y axis line/.append style={-Stealth}]
+                    \addplot[thick] coordinates 
+                    {(-2,0)(-2,2)(2,2)(2,0)};
+                    \node[left] at (0,2.5) {1};
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
+
+        \sj (2) 抽样信号 $f_{s}(t)$ 的频谱 $\Omega=2 \mpi / T=\mpi$,
+        $$
+        F_{s}(j \omega)=\frac{1}{2 \mpi} F(j \omega) * \Omega \delta_{\Omega}(\omega)=\frac{1}{T} F(j \omega)*\delta_{\mpi}(\omega)=\frac{1}{2} \msum_{n=-\infty}^{+\infty} G_{\mpi / 2}(\omega-n \mpi)\,.
+        $$
+        $$
+        H(j \omega)=\symscr{F}\left[2 G_{1}(t)\right]=2 \mathrm{Sinc}\left(\frac{\omega}{2}\right)\,,
+        $$
+        画出滤波器$H(j\omega)$的频谱图:
+        \begin{center}
+        \begin{tikzpicture}[baseline]
+            \pgfplotsset{width=5cm,height=4cm}
+            \begin{axis}[
+                axis y line=center,
+                axis x line=middle,
+                xlabel=$t$,xlabel shift=-20pt,
+                ylabel=$h(t)$,
+                xmax=3,
+                xmin=-3,
+                ymax=3,
+                ymin=-1,
+                xtick={-2,2},xticklabels={$-1/2$,$1/2$},
+                ytick=\empty,
+                hide obscured x ticks=false,
+                every inner x axis line/.append style={-Stealth},
+                every inner y axis line/.append style={-Stealth}]
+                \addplot[thick] coordinates 
+                {(-2,0)(-2,2)(2,2)(2,0)};
+                \node[left] at (0,2.3) {2};
+            \end{axis}
+        \end{tikzpicture}
+        \qquad
+        \begin{tikzpicture}[baseline]
+            \pgfplotsset{width=5cm,height=4cm}
+            \begin{axis}[
+                axis y line=center,
+                axis x line=middle,
+                xlabel=$\omega$,xlabel shift=-20pt,
+                ylabel=$H(j\omega)$,
+                xmax=12,
+                xmin=-12,
+                ymax=3,
+                ymin=-1,
+                xtick={-3.14,3.14},xticklabels={$-2\mpi$,$2\mpi$},
+                ytick=\empty,
+                hide obscured x ticks=false,
+                every inner x axis line/.append style={-Stealth},
+                every inner y axis line/.append style={-Stealth}]
+                \addplot[thick,domain=-9.42:0.001,samples=501,smooth,mark=none] 
+                {2*sin(deg(x))/x};
+                \addplot[thick,domain=0.001:9.42,samples=501,smooth,mark=none] 
+                {2*sin(deg(x))/x};
+                \node[left] at (0,2.3) {2};
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+    故$Y(j \omega)=F_{s}(j \omega) H(j \omega)=\mathrm{Sinc}\left(\frac{\omega}{2}\right) \msum_{n=-\infty}^{\infty} G_{\mpi / 2}(\omega-n \mpi)$,如图所示:
+    \begin{center}
+        \begin{solution}
+            \begin{tikzpicture}
+                \pgfplotsset{width=10cm,height=4cm}
+                \begin{axis}[
+                    axis y line=center,
+                    axis x line=middle,
+                    xlabel=$\omega$,xlabel shift=-20pt,
+                    ylabel=$H(j\omega)$,
+                    xmax=4,
+                    xmin=-4,
+                    ymax=3,
+                    ymin=0,
+                    xtick={-pi,-0.5*pi,-0.125*pi,0.125*pi,0.375*pi,0.625*pi,0.875*pi},xticklabels={$-2\mpi$,$-\mpi$,$-\frac{\mpi}{4}$,$\frac{\mpi}{4}$,$\frac{3\mpi}{4}$,$\frac{5\mpi}{4}$,$\frac{7\mpi}{8}$},
+                    ytick=\empty,
+                    hide obscured x ticks=false,
+                    every inner x axis line/.append style={-Stealth},
+                    every inner y axis line/.append style={-Stealth}]
+                    \addplot[dashed,black,thick,domain=-3.14:0.001,samples=501,smooth,mark=none] 
+                    {2*sin(deg(x))/x};
+                    \addplot[dashed,black,thick,domain=0.001:3.14,samples=501,smooth,mark=none] 
+                    {2*sin(deg(x))/x};
+                    \addplot[thick,domain=0.001:pi*0.125,samples=501,smooth,mark=none] 
+                    {2*sin(deg(x))/x};
+                    \addplot[thick,domain=-pi*0.125:-0.001,samples=501,smooth,mark=none] 
+                    {2*sin(deg(x))/x};
+                    \addplot[thick,domain=pi*0.375:pi*0.625,samples=501,smooth,mark=none] 
+                    {2*sin(deg(x))/x};
+                    \addplot[thick,domain=-pi*0.625:-0.375*pi,samples=501,smooth,mark=none] 
+                    {2*sin(deg(x))/x};
+                    \addplot[thick,domain=pi*0.875:pi,samples=501,smooth,mark=none] 
+                    {2*sin(deg(x))/x};
+                    \addplot[thick,domain=-pi:-0.875*pi,samples=501,smooth,mark=none] 
+                    {2*sin(deg(x))/x};
+                    \addplot[thick] coordinates {(-0.875*pi,0)(-0.875*pi,0.2784)};
+                    \addplot[thick] coordinates {(0.875*pi,0)(0.875*pi,0.2784)};
+                    \addplot[thick] coordinates {(-0.625*pi,0)(-0.625*pi,0.9411)};
+                    \addplot[thick] coordinates {(0.625*pi,0)(0.625*pi,0.9411)};
+                    \addplot[thick] coordinates {(-0.375*pi,0)(-0.375*pi,1.5684)};
+                    \addplot[thick] coordinates {(0.375*pi,0)(0.375*pi,1.5684)};
+                    \addplot[thick] coordinates {(-0.125*pi,0)(-0.125*pi,1.9489)};
+                    \addplot[thick] coordinates {(0.125*pi,0)(0.125*pi,1.9489)};
+                    \node[left] at (0,2.3) {1};
+                    \draw[black] (3,1) node{\footnotesize $\mathrm{Sinc}\left(\frac{\omega}{2}\right)$};
+                \end{axis}
+            \end{tikzpicture}
+        \end{solution}
+    \end{center}
+    $Y(j\omega)$经过系统后输出应为
+    \begin{center}
+        \raisebox{2em}{
+        \begin{circuitikz}
+            \node[rectangle,draw,right] at (0,0) (h) {$H_1(j\omega)$};
+            \draw (-1,0) node[left]{$Y(j\omega)$} -- (h.west)
+                  (h.east) -- ($(h.east)+(1,0)$) coordinate (a) node[right]{$F(j\omega)$};
+            \draw (h.west) node[inputarrow,color=dr]{}
+                  (a) node[inputarrow,color=dr]{};
+        \end{circuitikz}}
+        \begin{tikzpicture}
+            \pgfplotsset{width=5cm,height=3.5cm}
+            \begin{axis}[
+                axis y line=center,
+                axis x line=middle,
+                xlabel=$\omega$,xlabel shift=-20pt,
+                ylabel=$F(j\omega)$,
+                xmax=3,
+                xmin=-3,
+                ymax=3,
+                ymin=0,
+                xtick={-2,0,2},xticklabels={$-\frac{\mpi}{4}$,0,$\frac{\mpi}{4}$},
+                ytick=\empty,
+                hide obscured x ticks=false,
+                every inner x axis line/.append style={-Stealth},
+                every inner y axis line/.append style={-Stealth}]
+                \addplot[thick] coordinates 
+                {(-2,0)(-2,2)(2,2)(2,0)};
+                \node[left] at (0,2.5) {1};
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+    所以该系统$H_1(j\omega)$如下图所示:
+    \begin{center}
+        \begin{tikzpicture}
+            \pgfplotsset{width=5cm,height=3.5cm}
+            \begin{axis}[
+                axis y line=center,
+                axis x line=middle,
+                xlabel=$\omega$,xlabel shift=-20pt,
+                ylabel=$H_1(j\omega)$,
+                xmax=0.6,
+                xmin=-0.6,
+                ymax=1.5,
+                ymin=0,
+                xtick={-0.125*pi,0,0.125*pi},xticklabels={$-\frac{\mpi}{4}$,0,$\frac{\mpi}{4}$},
+                ytick=\empty,
+                hide obscured x ticks=false,
+                every inner x axis line/.append style={-Stealth},
+                every inner y axis line/.append style={-Stealth}]
+                \addplot[thick,domain=0.001:0.125*pi,samples=501,smooth,mark=none] 
+                    {x/sin(deg(x))};
+                \addplot[thick,domain=-0.125*pi:-0.001,samples=501,smooth,mark=none] 
+                    {x/sin(deg(x))};
+                \addplot[thick] coordinates {(-0.125*pi,0)(-0.125*pi,1.0262)};
+                \addplot[thick] coordinates {(0.125*pi,0)(0.125*pi,1.0262)};
+                \node[left] at (0,1.2) {1};
+            \end{axis}
+        \end{tikzpicture}
+        \begin{tikzpicture}[overlay,remember picture]
+            \draw (-2.9,2.5) node[left]{\footnotesize $1/\mathrm{Sinc}\left(\frac{\omega}{2}\right)$};
+        \end{tikzpicture}
+    \end{center}
+    \end{solution}
+\end{questions}
+\end{groups}
+%%%%%%%%%%%%%%%%%%%%%%%%%% 样卷排版 %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% 使用时将此部分删掉 %%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+~\vfill
+\footnote{源自\url{https://tex.stackexchange.com/questions/158668/nice-scientific-pictures-show-off}.}\pipar{3 . 1 4 1 5 9 2 6 5 3 5 8 9 7 9 3 2 3 8 4 6 2 6 4 3 3 8 3 2 7 9 5 0 2 8 8 4 1 9 7 1 6 9 3 9 9 3 7 5 1 0 5 8 2 0 9 7 4 9 4 4 5 9 2 3 0 7 8 1 6 4 0 6 2 8 6  2 0 8 9 9 8 6 2 8 0 3 4 8 2 5 3 4 2 1 1 7 0 6 7 9 8 2 1 4 8 0 8 6 5 1 3 2 8 2 3 0 6 6 4 7 0 9 3 8 4 4 6 0 9 5 5 0 5 8 2 2 3 1 7 2 5 3 5 9 4 0 8 1 2 8 4 8 1  1 1 7 4 5 0 2 8 4 1 0 2 7 0 1 9 3 8 5 2 1 1 0 5 5 5 9 6 4 4 6 2 2 9 4 8 9 5 4 9 3 0 3 8 1 9 6 4 4 2 8 8 1 0 9 7 5 6 6 5 9 3 3 4 4 6 1 2 8 4 7 5 6 4 8 2 3 3  7 8 6 7 8 3 1 6 5 2 7 1 2 0 1 9 0 9 1 4 5 6 4 8 5 6 6 9 2 3 4 6 0 3 4 8 6 1 0 4 5 4 3 2 6 6 4 8 2 1 3 3 9 3 6 0 7 2 6 0 2 4 9 1 4 1 2 7 3 7 2 4 5 8 7 0 0 6  6 0 6 3 1 5 5 8 8 1 7 4 8 8 1 5 2 0 9 2 0 9 6 2 8 2 9 2 5 4 0 9 1 7 1 5 3 6 4 3 6 7 8 9 2 5 9 0 3 6 0 0 1 1 3 3 0 5 3 0 5 4 8 8 2 0 4 6 6 5 2 1 3 8 4 1 4 6  9 5 1 9 4 1 5 1 1 6 0 9 4 3 3 0 5 7 2 7 0 3 6 5 7 5 9 5 9 1 9 5 3 0 9 2 1 8 6 1 1 7 3 8 1 9 3 2 6 1 1 7 9 3 1 0 5 1 1 8 5 4 8 0 7 4 4 6 2 3 7 9 9 6 2 7 4 9  5 6 7 3 5 1 8 8 5 7 5 2 7 2 4 8 9 1 2 2 7 9 3 8 1 8 3 0 1 1 9 4 9 1 7}
+\vfill
+
+%%%%%%%%%%%%%%%%%%%%%% 使用时将此部分删掉 %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+
