@@ -64,7 +64,7 @@
 \subsubsection{默认配置}
 如果觉得\textit{私订}配置太繁琐,则可以直接将文类选项 \mt{custom} 改为对应自己系统的选项(如Windows系统下为\mt{windows}),参见\hyperlink{hbxx}{1.1 宏包选项},提供的是与\CTeX{}一致的字体配置接口,详细说明参考\href{http://mirrors.ctan.org/language/chinese/ctex/ctex.pdf}{\CTeX{}宏包文档}.
 
-如果使用非Windows的字族,可能会有报错,因为文类文件中用了一此选项下的字体命令,找到报错命令的位置,进行替换或定义报错命令即可.
+如果使用非Windows的字族,可能会有报错,因为文类文件中用了一些此选项下的字体命令,找到报错命令的位置,进行替换或定义报错命令即可.
 
 \subsection{编译说明}
 \begin{compactitem}
@@ -82,7 +82,7 @@
 \ml{\backslash{}examperiod\{考试时期\}}{期中考或期末考.}
 \ml{\backslash{}subject\{考试科目\}}{考试科目.}
 \ml{\backslash{}papertype\{试卷类型\}}{A卷或B卷.}
-\ml{\backslash{}termyear\{起始年\}\{终止年\}}{学年度.}
+\ml{\backslash{}termyear\{起始年\}\{终止年\}}{学年度,只需输入年份数字.}
 \ml{\backslash{}term\{学期\}}{第1或第2学期,只需输入数字.}
 \ml{\backslash{}school\{学院/系\}}{学院或院系名称.}
 \ml{\backslash{}examtype\{考试方式\}}{开卷考或闭卷考.}
@@ -141,8 +141,8 @@
 \ml{\backslash{}question[分值] 题目内容}{在试题环境中新增试题,分值为数值,要同\mt{questions}的\mt{s}选项一起使用.}
 \ml{\backslash{}example 题目内容}{在试题环境中新增一道例题.}
 \ml{\backslash{}exercise 题目内容}{在试题环境中新增一道习题.}
-\ml{\backslash{}pkay{答案}}{在学生版试卷中显示一个括号,在教师版试卷中括号中会显示答案,针对选择题.}
-\ml{\backslash{}kay{答案}}{在学生版试卷中显示与答案匹配长度的横线,在教师版试卷中括号中会显示答案,针对填空题.}
+\ml{\backslash{}pkey\{答案\}}{在学生版试卷中显示一个括号,在教师版试卷中括号中会显示答案,针对选择题.}
+\ml{\backslash{}key\{答案\}}{在学生版试卷中显示与答案匹配长度的横线,在教师版试卷中括号中会显示答案,针对填空题.}
 \ml{\backslash{}kh}{仅显示括号.}
 \ml{\backslash{}hx[宽度]}{仅仅显示横线,默认为4个字宽,也可以通过选项自定义.}
 \ml{\backslash{}threechoices}{显示3个选项.}
@@ -183,8 +183,8 @@
 \subsubsection{颜色}
 链接颜色和解析颜色设置如下,颜色配置请参考\href{https://mirror-hk.koddos.net/CTAN/macros/latex/contrib/xcolor/xcolor.pdf}{xcolor宏包}.
 \begin{lstlisting}[title=颜色设置,language=tex,firstnumber=92]
-\colorlet{dr}{red!70!black}	    % 链接颜色
-\colorlet{jx}{red!70!black}		% 答案和解析颜色
+\colorlet{dr}{red!70!black}	% 链接颜色
+\colorlet{jx}{red!70!black}	% 答案和解析颜色
 \end{lstlisting}
 
 \subsubsection{符号}
@@ -198,7 +198,7 @@ $$
 
 由于unicode-math宏包自己提供的数学符号花体和粗体命令,也作的命令的更新,如果不使用unicode-math宏包会报错,将\mt{sysuexam.cls}中行184--185注释掉即可.
 
-\begin{lstlisting}[title={\mt{sysuexam.cls}文件中\mt{\backslash{}msum}和\mt{\backslash{}mpi}}声明和更新命令,language=tex,firstnumber=177]
+\begin{lstlisting}[title={\mt{sysuexam.cls}文件中\mt{\backslash{}msum}和\mt{\backslash{}mpi}}声明和更新命令,language=tex,firstnumber=182]
 % 重设\sum符号
 \DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
 \DeclareMathSymbol{\msum}{\mathop}{largesymbols}{"50}
@@ -212,21 +212,21 @@ $$
 
 \subsubsection{页面边距}
 修改此处代码即可.
-\begin{lstlisting}[title=页面边距设置,language=tex,firstnumber=261]
+\begin{lstlisting}[title=页面边距设置,language=tex,firstnumber=271]
 %
 % 双栏显示
 %
 \if@twocolumn
 \geometry{a3paper,landscape,twocolumn,columnsep=40mm,left=20mm,%
-right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
-\else														   % 单栏设置
+right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
+\else										     % 单栏设置
 \geometry{a4paper,left=25mm,right=25mm,top=25mm,bottom=25mm, headheight=20mm}
 \fi
 \end{lstlisting}
 
 \subsubsection{代码高亮}
 代码高亮设置如下,更多内容请参考\href{http://texdoc.net/texmf-dist/doc/latex/listings/listings.pdf}{listings宏包}.
-\begin{lstlisting}[title=代码高亮设置,language=tex,firstnumber=212]
+\begin{lstlisting}[title=代码高亮设置,language=tex,firstnumber=220]
     columns=fixed,
     numbers=left,                                % 在左侧显示行号
     frame=tb,                                    % 背景边框
