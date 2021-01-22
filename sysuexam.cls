@@ -30,7 +30,7 @@
 % SYSU
 % wangjx77@mail2.sysu.edu.cn
 %
-% The update version is available on TODO
+% The update version is available on https://github.com/WRangers/sysuexam
 
 \def\fileversion{1.0}
 \def\filedate{2021/01/27}
