@@ -72,6 +72,7 @@
     \item 如果使用\CTeX{}宏包提供的字体配置,则参考\href{http://mirrors.ctan.org/language/chinese/ctex/ctex.pdf}{\CTeX{}宏包文档}.
     \item 基于\hologo{LuaLaTeX}或\hologo{LuaTeX}的编译请参考\href{http://mirrors.ctan.org/language/chinese/ctex/ctex.pdf}{\CTeX{}宏包文档}.
     \item 不要调换fontspec宏包、\CTeX{}宏包和unicode-math宏包的调用顺序,否则会clash(原因应该在于内部的字体组织架构).
+    \item 一般要编译两次,页脚的总页数才会更新.
 \end{compactitem}
 
 \subsection{命令}
@@ -273,6 +274,11 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
 \medskip
 
 文类设计基本完成,后续应该不会有大的更新.~Happy \LaTeX{}ing!
+
+\ver{v1.1}{(2020/01/22)}\par
+\begin{compactitem}
+    \item 修改页脚页码格式为``第$x$页\quad 共$y$页''(这是一开始就想做的,不小心忘记了).
+\end{compactitem}
 }
 
 \section{样卷与说明}
@@ -695,7 +701,7 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
         \subquestion[4] 计算高通滤波器系统函数$H_{HP}(s)$.
     \end{subquestions}
     \hint 低通到高通的映射关系$p=\frac{\lambda_{p}\Omega_{ph}}{s}$,频率映射关系$\lambda=-\frac{\lambda_{p}\Omega_{ph}}{\Omega}$.二阶和三阶巴特沃斯3dB频率归一化低通滤波器的系统函数为$G_{2}(p)=\frac{1}{p^{2}+1.4142 p+1}, G_{3}(p)=\frac{1}{p^{3}+2 p^{2}+2 p+1}$.
-    \begin{solution}[5cm]
+    \begin{solution}
         \answers (1) 对应的低通滤波的通带边界频率为10Hz,阻带边界频率为100Hz,因此低通滤波器的\par
         $\lambda_{s p}=\frac{\lambda_{s}}{\lambda_{p}}=10, \quad k_{s p}=\sqrt{\frac{10^{\alpha_{s} 10}-1}{10^{\alpha_{p} / 10}-1}}=19.5538\,;$\score{1}{1}
         $N=\frac{\lg k_{s p}}{\lg \lambda_{s p}}=1.2912\,, 取N=2\,;$\score{1}{2}
@@ -722,10 +728,9 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
     $$E\left\{\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}\right\}=0.$$
     证明任何无偏估计量$\hat{\theta}$的方差满足
     $$\operatorname{Var}(\hat{\theta})=E\left[(\theta-\hat{\theta})^{2}\right] \geqslant \frac{1}{E\left\{\left[\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}\right]^{2}\right\}}=-\frac{1}{E\left\{\frac{\partial^{2} \ln f(\boldsymbol{z} ; \theta)}{\partial \theta^{2}}\right\}},$$
-    当且仅当$$\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}=(\hat{\theta}-\theta) k(\theta)$$时,%
-    上式的等号成立.
+    当且仅当$$\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}=(\hat{\theta}-\theta) k(\theta)$$时,上式的等号成立.\par
     
-    \begin{solution}
+    \begin{solution}[10cm]
     \proof 设$\hat{\theta}$是无偏估计,则有$E(\hat{\theta}-\theta)=0$,即
     $$E(\hat{\theta}-\theta)=\int_{-\infty}^{\infty}(\hat{\theta}-\theta) f(\boldsymbol{z} ; \theta) \mathrm{d} z=0,$$
     对$\theta$求导,得到(正则条件保证积分号和微分号可交换)
@@ -785,7 +790,7 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
 	$$
 	求$\mathrm{e}^{\symbf{A}t}$(其中$t$为参数).
 
-    \begin{solution}
+    \begin{solution}[10cm]
     \answers
 
     \method 通过矩阵函数的Jordan表示计算.因为$$
@@ -1111,10 +1116,10 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%% 使用时将此部分删掉 %%%%%%%%%%%%%%%%%%%%%%
 
-\newpage
-~\vfill
-\footnote{源自\url{https://tex.stackexchange.com/questions/158668/nice-scientific-pictures-show-off}.}\pipar{3 . 1 4 1 5 9 2 6 5 3 5 8 9 7 9 3 2 3 8 4 6 2 6 4 3 3 8 3 2 7 9 5 0 2 8 8 4 1 9 7 1 6 9 3 9 9 3 7 5 1 0 5 8 2 0 9 7 4 9 4 4 5 9 2 3 0 7 8 1 6 4 0 6 2 8 6  2 0 8 9 9 8 6 2 8 0 3 4 8 2 5 3 4 2 1 1 7 0 6 7 9 8 2 1 4 8 0 8 6 5 1 3 2 8 2 3 0 6 6 4 7 0 9 3 8 4 4 6 0 9 5 5 0 5 8 2 2 3 1 7 2 5 3 5 9 4 0 8 1 2 8 4 8 1  1 1 7 4 5 0 2 8 4 1 0 2 7 0 1 9 3 8 5 2 1 1 0 5 5 5 9 6 4 4 6 2 2 9 4 8 9 5 4 9 3 0 3 8 1 9 6 4 4 2 8 8 1 0 9 7 5 6 6 5 9 3 3 4 4 6 1 2 8 4 7 5 6 4 8 2 3 3  7 8 6 7 8 3 1 6 5 2 7 1 2 0 1 9 0 9 1 4 5 6 4 8 5 6 6 9 2 3 4 6 0 3 4 8 6 1 0 4 5 4 3 2 6 6 4 8 2 1 3 3 9 3 6 0 7 2 6 0 2 4 9 1 4 1 2 7 3 7 2 4 5 8 7 0 0 6  6 0 6 3 1 5 5 8 8 1 7 4 8 8 1 5 2 0 9 2 0 9 6 2 8 2 9 2 5 4 0 9 1 7 1 5 3 6 4 3 6 7 8 9 2 5 9 0 3 6 0 0 1 1 3 3 0 5 3 0 5 4 8 8 2 0 4 6 6 5 2 1 3 8 4 1 4 6  9 5 1 9 4 1 5 1 1 6 0 9 4 3 3 0 5 7 2 7 0 3 6 5 7 5 9 5 9 1 9 5 3 0 9 2 1 8 6 1 1 7 3 8 1 9 3 2 6 1 1 7 9 3 1 0 5 1 1 8 5 4 8 0 7 4 4 6 2 3 7 9 9 6 2 7 4 9  5 6 7 3 5 1 8 8 5 7 5 2 7 2 4 8 9 1 2 2 7 9 3 8 1 8 3 0 1 1 9 4 9 1 7}
-\vfill
+% \newpage
+% ~\vfill
+% \footnote{源自\url{https://tex.stackexchange.com/questions/158668/nice-scientific-pictures-show-off}.}\pipar{3 . 1 4 1 5 9 2 6 5 3 5 8 9 7 9 3 2 3 8 4 6 2 6 4 3 3 8 3 2 7 9 5 0 2 8 8 4 1 9 7 1 6 9 3 9 9 3 7 5 1 0 5 8 2 0 9 7 4 9 4 4 5 9 2 3 0 7 8 1 6 4 0 6 2 8 6  2 0 8 9 9 8 6 2 8 0 3 4 8 2 5 3 4 2 1 1 7 0 6 7 9 8 2 1 4 8 0 8 6 5 1 3 2 8 2 3 0 6 6 4 7 0 9 3 8 4 4 6 0 9 5 5 0 5 8 2 2 3 1 7 2 5 3 5 9 4 0 8 1 2 8 4 8 1  1 1 7 4 5 0 2 8 4 1 0 2 7 0 1 9 3 8 5 2 1 1 0 5 5 5 9 6 4 4 6 2 2 9 4 8 9 5 4 9 3 0 3 8 1 9 6 4 4 2 8 8 1 0 9 7 5 6 6 5 9 3 3 4 4 6 1 2 8 4 7 5 6 4 8 2 3 3  7 8 6 7 8 3 1 6 5 2 7 1 2 0 1 9 0 9 1 4 5 6 4 8 5 6 6 9 2 3 4 6 0 3 4 8 6 1 0 4 5 4 3 2 6 6 4 8 2 1 3 3 9 3 6 0 7 2 6 0 2 4 9 1 4 1 2 7 3 7 2 4 5 8 7 0 0 6  6 0 6 3 1 5 5 8 8 1 7 4 8 8 1 5 2 0 9 2 0 9 6 2 8 2 9 2 5 4 0 9 1 7 1 5 3 6 4 3 6 7 8 9 2 5 9 0 3 6 0 0 1 1 3 3 0 5 3 0 5 4 8 8 2 0 4 6 6 5 2 1 3 8 4 1 4 6  9 5 1 9 4 1 5 1 1 6 0 9 4 3 3 0 5 7 2 7 0 3 6 5 7 5 9 5 9 1 9 5 3 0 9 2 1 8 6 1 1 7 3 8 1 9 3 2 6 1 1 7 9 3 1 0 5 1 1 8 5 4 8 0 7 4 4 6 2 3 7 9 9 6 2 7 4 9  5 6 7 3 5 1 8 8 5 7 5 2 7 2 4 8 9 1 2 2 7 9 3 8 1 8 3 0 1 1 9 4 9 1 7}
+% \vfill
 
 %%%%%%%%%%%%%%%%%%%%%% 使用时将此部分删掉 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
