@@ -1,4 +1,4 @@
-% sysuexam.cls
+% sysuexam.cls v1.1
 %
 % A LaTeX2e document class for SYSU exams.
 %
