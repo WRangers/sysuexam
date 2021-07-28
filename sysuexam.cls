@@ -163,7 +163,7 @@
 \if@custom
 % 中文字体设置
 \setCJKmainfont[ItalicFont={方正楷体简体}]{Noto Serif CJK SC}
-\setCJKmonofont{方正仿宋_GBK}
+\setCJKmonofont{方正仿宋_GBK.ttf}
 % \setCJKsansfont[AutoFakeBold=true]{方正黑体_GBK}
 % 英文字体
 \setmainfont{XITS}
@@ -402,12 +402,12 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
 \newcommand{\question}[1][0]{
 	\stepcounter{Question}
 	\if@list
-		\item \if@showscore \kaishu ( #1 分) \normalfont \fi
+		\item \if@showscore \kaishu (#1 分) \normalfont \fi
 	\else
 		\vspace{2mm}
 
 		\arabic{Question}. 
-		\if@showscore \kaishu ( #1 分) \normalfont \fi
+		\if@showscore \kaishu (#1 分) \normalfont \fi
 	\fi
 }
 
@@ -416,11 +416,11 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
 	\stepcounter{Example}
 	\if@list
 		\item[例题\arabic{Example}. ]
-		\if@showscore \kaishu ( #1 分) \normalfont \fi
+		\if@showscore \kaishu (#1 分) \normalfont \fi
 	\else
 		\vspace{2mm}
 		\par 例题\arabic{Example}. 
-		\if@showscore \kaishu ( #1 分) \normalfont \fi
+		\if@showscore \kaishu (#1 分) \normalfont \fi
 	\fi
 }
 
@@ -429,11 +429,11 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
 	\stepcounter{Exercise}
 	\if@list
 		\item[习题\arabic{Exercise}. ]
-		\if@showscore \kaishu ( #1 分) \normalfont \fi
+		\if@showscore \kaishu (#1 分) \normalfont \fi
 	\else
 		\vspace{2mm}
 		\par 习题\arabic{Exercise}. 
-		\if@showscore \kaishu ( #1 分) \normalfont \fi
+		\if@showscore \kaishu (#1 分) \normalfont \fi
 	\fi
 }
 
@@ -443,7 +443,7 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
 \setlist[subquestions,2]{label=(\roman*)}
 
 % 定义新增小问命令
-\newcommand{\subquestion}[1][0]{\item \if@showscore \kaishu ( #1 分) \normalfont \fi} 
+\newcommand{\subquestion}[1][0]{\item \if@showscore \kaishu (#1 分) \normalfont \fi} 
 
 \newenvironment{solution}[1][0cm]{
 	\setlength{\myvertspace}{#1}
