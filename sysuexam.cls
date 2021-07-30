@@ -396,6 +396,7 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
 	\global\@showscorefalse
 	\global\@showskipfalse
 	\global\@showparenfalse
+	\global\@resetcounterfalse
 }
 
 % 定义新增试题命令
