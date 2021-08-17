@@ -1,4 +1,4 @@
-% sysuexam.cls v1.1
+% sysuexam.cls v1.2
 %
 % A LaTeX2e document class for SYSU exams.
 %
@@ -145,6 +145,7 @@
 \RequirePackage{makecell}
 % \RequirePackage[page]{totalcount}
 \RequirePackage{lastpage}
+\usepackage{zhnumber}
 
 %% 字体设置
 \RequirePackage[no-math]{fontspec}                  % 字体选择宏包
@@ -153,7 +154,7 @@
 \setmathfont{XITS Math}                         % 设置数学字体为XITS Math
 \setmathfont{XITS Math Bold}[version=bold]
 \RequirePackage[fontset=\@fontset,zihao=\@fontsize]{ctex}
-\ctexset{linestretch=1.245, autoindent=2em}      % 设置行距和缩进
+\ctexset{linestretch=1.245, autoindent=2\ccwd}      % 设置行距和缩进
 
 \xeCJKsetup{PlainEquation=true}
 \xeCJKsetup{CJKmath=true}
@@ -164,7 +165,7 @@
 % 中文字体设置
 \setCJKmainfont[ItalicFont={方正楷体简体}]{Noto Serif CJK SC}
 \setCJKmonofont{方正仿宋_GBK.ttf}
-% \setCJKsansfont[AutoFakeBold=true]{方正黑体_GBK}
+\setCJKsansfont[AutoFakeBold=true]{黑体}
 % 英文字体
 \setmainfont{XITS}
 \setmonofont{Courier New}
@@ -382,7 +383,7 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
   		\setcounter{Question}{0}
 	 \fi
 	\if@list
-		\list{\arabic{Question}.}{\setlength{\leftmargin}{0pt}}
+		\list{\arabic{Question}.}{\setlength{\leftmargin}{0pt}} % 修改\leftmargin{<距离>}中的参数即可修改缩进距离
 	\else
 		\par \begingroup \par
 	\fi
@@ -403,12 +404,12 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
 \newcommand{\question}[1][0]{
 	\stepcounter{Question}
 	\if@list
-		\item \if@showscore \kaishu (#1 分) \normalfont \fi
+		\item \if@showscore \kaishu (#1{}分) \normalfont \fi
 	\else
 		\vspace{2mm}
 
 		\arabic{Question}. 
-		\if@showscore \kaishu (#1 分) \normalfont \fi
+		\if@showscore \kaishu (#1{}分) \normalfont \fi
 	\fi
 }
 
@@ -417,11 +418,11 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
 	\stepcounter{Example}
 	\if@list
 		\item[例题\arabic{Example}. ]
-		\if@showscore \kaishu (#1 分) \normalfont \fi
+		\if@showscore \kaishu (#1{}分) \normalfont \fi
 	\else
 		\vspace{2mm}
 		\par 例题\arabic{Example}. 
-		\if@showscore \kaishu (#1 分) \normalfont \fi
+		\if@showscore \kaishu (#1{}分) \normalfont \fi
 	\fi
 }
 
@@ -430,11 +431,11 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
 	\stepcounter{Exercise}
 	\if@list
 		\item[习题\arabic{Exercise}. ]
-		\if@showscore \kaishu (#1 分) \normalfont \fi
+		\if@showscore \kaishu (#1{}分) \normalfont \fi
 	\else
 		\vspace{2mm}
 		\par 习题\arabic{Exercise}. 
-		\if@showscore \kaishu (#1 分) \normalfont \fi
+		\if@showscore \kaishu (#1{}分) \normalfont \fi
 	\fi
 }
 
@@ -443,14 +444,22 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
 \setlist[subquestions,1]{label=(\arabic*)}
 \setlist[subquestions,2]{label=(\roman*)}
 
+% 定义小问答案环境
+\newlist{subsolutions}{enumerate}{2}
+\setlist[subsolutions,1]{label=(\arabic*)}
+\setlist[subsolutions,2]{label=(\roman*)}
+
 % 定义新增小问命令
-\newcommand{\subquestion}[1][0]{\item \if@showscore \kaishu (#1 分) \normalfont \fi} 
+\newcommand{\subquestion}[1][0]{\item \if@showscore \kaishu (#1{}分) \normalfont \fi} 
+
+% 定义新增小问答案命令
+\newcommand{\subsolution}[1][0]{\item} 
 
 \newenvironment{solution}[1][0cm]{
 	\setlength{\myvertspace}{#1}
-	\par \if@printanswers \par \color{dr} \begingroup \else \if@showskip \vspace*{\myvertspace} \fi \setbox\z@\vbox\bgroup\fi \normalfont
+	\par \if@printanswers \color{dr} \par \begingroup  \else \if@showskip \vspace*{\myvertspace} \fi \setbox\z@\vbox\bgroup\fi \normalfont
 }{
-	\par \if@printanswers \endgroup \color{black} \else \egroup \fi \par
+	\par \if@printanswers \endgroup \else \egroup \fi \par 
 }
 
 \newcommand{\hint}{
@@ -458,25 +467,23 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
 }
 \newcommand{\method}{
 	\stepcounter{Method}
-	\vspace{2mm}
-	\par \normalfont \quad \textbf{解法\chinese{Method}}\quad \normalfont
-}
-
-\newcommand{\ans}{
-	\par \normalfont \textbf{答}\quad \normalfont
+    \textbf{解法\chinese{Method}}\quad
 }
 	
 \newcommand{\answer}{
 	\par \normalfont \textbf{答案}\quad \normalfont
 }
 
-\newcommand{\answers}{
-	\par \normalfont \textbf{解}\quad \normalfont
+% \newcommand{\answers}{
+% 	\par \normalfont \textbf{解}\quad \normalfont
+% }
+\newcommand{\answers}[1][解]{
+	\par \normalfont \makebox[0pt][r]{\textbf{#1\:}}\sj\ignorespaces
+}
+\newcommand{\subanswers}[1][解]{
+	\normalfont \makebox[0pt][r]{\textbf{#1\qquad}}\ignorespaces
 }
 
-\newcommand{\proof}{
-	\par \normalfont \textbf{证明}\quad \normalfont
-}
 \newcommand{\proofover}{\hfill$\square$}
 
 \newcommand{\analysis}{
@@ -496,8 +503,14 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
   \cleaders \hb@xt@ .44em{\hss\hbox{$\cdot$}\hss}\hfill
   \kern\z@}
 \newcommand{\score}[2]{
-	\cdotfill \kaishu\small 本步骤 #1 分,累计 #2 分\normalfont\normalsize
+	\cdotfill \kaishu\small 本步骤{}#1{}分,累计{}#2{}分\normalfont\normalsize
 	\par}
+\newcommand{\scoreremark}[1]{
+	\cdotfill \kaishu\small #1
+	\normalfont\normalsize
+	\par}
+\newcommand{\equscore}[3]{\par\hfill #1 \score{#2}{#3}}
+\newcommand{\equscoreremark}[2]{\par\hfill #1 \scoreremark{#2}}
 
 \makeatletter
 \newcommand{\build}[2]{\leavevmode
@@ -734,62 +747,13 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm}			   % 双栏设置
 \newcommand{\ver}[2]{\noindent\textbf{#1}\hfill#2}
 \newcommand{\todo}{\textbf{Todo List}}
 \newcommand{\miktex}{MiK\TeX}
-\newcommand{\texlive}{ \TeX{}Live}
+\newcommand{\texlive}{\TeX{}Live}
 \newcommand{\ml}[2]{\noindent\texttt{#1}\par #2\par}
 \newcommand{\mt}[1]{$\text{\texttt{#1}}$}
-\newcommand{\sj}{\hspace{2em}}
+\newcommand{\sj}{\hspace{2\ccwd}}
 \newcommand{\lk}[1][4pt]{\setlength{\arraycolsep}{#1}}
 
-% \def\pipar#1{\shapepar{\pishape}#1\par}
-% \def\pishape{%
-% {25.0839}%
-% {0.0838926}b{14.3456}\\%
-% {0.0838926}t{14.3456}{33.3054}\\%
-% {0.503356}t{11.5772}{37.6678}\\%
-% {1.25839}t{9.98322}{39.6812}\\%
-% {2.09732}t{8.52614}{41.5578}\\%
-% {2.85235}t{7.21477}{42.8691}\\%
-% {3.27181}t{6.7953}{43.2886}\\%
-% {4.11074}t{5.95638}{43.7081}\\%
-% {5.28524}t{4.78188}{43.7081}\\%
-% {5.62081}t{4.44631}{15.1007}st{19.547}{12.6678}st{32.2148}{15.0168}\\%
-% {5.62081}t{4.44631}{7.9698}t{19.547}{2.34899}t{32.2148}{2.34899}\\%
-% {6.04027}t{4.18011}{6.22257}t{19.4227}{2.37488}t{32.1424}{2.37047}\\%
-% {6.87919}t{3.64772}{5.16101}t{19.1741}{2.42667}t{31.9978}{2.41343}\\%
-% {7.63423}t{3.16856}{4.04621}t{18.9504}{2.47328}t{31.8676}{2.45208}\\%
-% {8.05369}t{2.90236}{3.80463}t{18.8261}{2.49917}t{31.7953}{2.47356}\\%
-% {8.38926}t{2.6894}{3.61137}t{18.7267}{2.51989}t{31.7245}{2.50373}\\%
-% {9.22819}t{2.15701}{3.12823}t{18.4781}{2.57167}t{31.5474}{2.57045}\\%
-% {9.98322}t{1.67785}{2.96021}t{18.2544}{2.61828}t{31.388}{2.6305}\\%
-% {11.5772}t{0.415968}{2.85584}t{17.7821}{2.71667}t{31.0515}{2.75727}\\%
-% {11.9966}t{0.0838926}{2.91826}t{17.6578}{2.74256}t{30.9629}{2.79063}\\%
-% {12.4161}t{0.0838926}{2.64861}t{17.5336}{2.76846}t{30.8743}{2.82399}\\%
-% {12.7517}t{0.0838926}{2.43289}t{17.4088}{2.81003}t{30.8035}{2.85068}\\%
-% {13.1711}t{0.0838926}{2.22315}t{17.2529}{2.862}t{30.715}{2.88404}\\%
-% {13.5906}t{0.0838926}{2.01342}t{17.097}{2.91397}t{30.6264}{2.9174}\\%
-% {14.0101}t{0.0838926}{0.838926}t{16.9411}{2.96594}t{30.5378}{2.95076}\\%
-% {14.0101}e{0.922819}t{16.9411}{2.96594}t{30.5378}{2.95076}\\%
-% {14.7651}t{16.6605}{3.05948}t{30.3785}{3.01081}\\%
-% {15.604}t{16.3487}{3.16342}t{30.2013}{3.18792}\\%
-% {16.7785}t{15.9121}{3.30893}t{30.0039}{3.3854}\\%
-% {21.896}t{14.0101}{3.94295}t{29.1434}{4.24586}\\%
-% {25.0839}t{12.7724}{4.3305}t{28.6074}{4.78188}\\%
-% {25.8389}t{12.4793}{4.42229}t{28.6074}{4.78188}\\%
-% {29.0268}t{11.2416}{4.80984}t{28.6074}{5.39494}\\%
-% {29.4463}t{11.0415}{4.8981}t{28.6074}{5.47561}\\%
-% {30.2013}t{10.6813}{5.04094}t{28.6074}{5.62081}\\%
-% {30.6208}t{10.4812}{5.12029}t{28.6074}{5.72383}\\%
-% {34.9832}t{8.40004}{5.9456}t{28.9901}{6.41263}\\%
-% {35.4027}t{8.19993}{6.00914}t{29.0268}{6.58557}\\%
-% {37.3322}t{7.27942}{6.30143}t{29.5346}{7.04256}\\%
-% {38.1711}t{6.87919}{6.42852}t{29.7554}{6.64702}\\%
-% {38.5906}t{6.87919}{6.29195}t{29.8658}{6.44925}\\%
-% {39.3456}t{7.09492}{5.59084}t{30.1612}{5.9965}\\%
-% {39.7651}t{7.21477}{5.20134}t{30.3254}{5.4129}\\%
-% {40.5201}t{7.63423}{4.24257}t{30.6208}{4.36242}\\%
-% {40.9396}t{8.01175}{3.56544}t{31.2081}{2.60067}\\%
-% {41.3591}t{8.38926}{2.43289}t{31.7953}{0.838926}\\%
-% {41.3591}e{10.8221}e{32.6342}%
-% }
+\newcommand*{\dif}{\mathop{}\!\mathrm{d}}
+\newcommand{\T}{^\top}
 
 \endinput

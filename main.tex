@@ -18,6 +18,8 @@
 \pagestyle{fancy}
 
 \begin{document}
+\let\pi\mpi                   % 参看第1.5.2节
+\let\sum\msum
 \maketitle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -166,16 +168,32 @@
 
 解答环境,紧跟着试题之后.``答题空间高度''默认为0cm,输入格式为``数字+单位''(单位可以是cm,mm或其他),要同\mt{questions}的\mt{t}选项一起使用.
 
-\ml{\backslash{}ans}{显示``答''字样.}
+\subsubsection{子解答环境}
+\begin{verbatim}
+\begin{solution}[答题空间高度]
+    \begin{subsolutions}
+        \subsolution \subanswers
+        \subsolution 
+
+        \hfill $A=2+B$ \score{1}{1}
+
+        \equscore{$\symbf{A}=\symbf{BC}$}{1}{2}
+    \end{subsolutions}
+\end{solution}
+\end{verbatim}
+
 \ml{\backslash{}answer}{显示``答案''字样.}
-\ml{\backslash{}answers}{显示``解''字样.}
-\ml{\backslash{}method}{显示''解法<中文数字>''字样, <中文字数>由内部计数器自动计数.}
-\ml{\backslash{}proof}{显示``证明''字样.}
-\ml{\backslash{}proofover}{在行末输出证毕符号$\square$.}
 \ml{\backslash{}analysis}{显示``解析''字样.}
 \ml{\backslash{}thought}{显示``分析''字样.}
+\ml{\backslash{}answers[可选参数]}{默认显示``解''字样,可选参数可填``答''、``证明''等其他文字.}
+\ml{\backslash{}subanswers[可选参数]}{功能同\texttt{\backslash{}answers},但用于子题解环境\texttt{subsolutions}中,放在第一个\texttt{\backslash{}item}之后.}
+\ml{\backslash{}method}{显示``解法<中文数字>''字样, <中文字数>由内部计数器自动计数.}
+\ml{\backslash{}proofover}{在行末输出证毕符号$\square$.}
 \ml{\backslash{}remark[其他文字]}{默认显示``注''字样,输入可选参数,则显示内容与``其他文字''一致.}
-\ml{\backslash{}score{此步骤得分}{累计得分}}{插入该步骤得分,显示此步骤的得分和累计得分.}
+\ml{\backslash{}score\{此步骤得分\}\{累计得分\}}{插入该步骤得分,显示此步骤的得分和累计得分.}
+\ml{\backslash{}scoreremark\{注释\}}{插入该步骤的注释,内容自拟.}
+\ml{\backslash{}equscore\{\$ 公式 \$\}\{此步骤得分\}\{累计得分\}}{功能同\texttt{\backslash{}score},但针对行间公式,公式要置于\$ ... \$ 符号之间,本质上是将行内公式居中.}
+\ml{\backslash{}equscore\{\$ 公式 \$\}\{注释\}}{功能类似\texttt{\backslash{}scoreremark}.}
 
 \subsubsection{其他命令}
 \ml{\backslash{}sj}{置于段首,缩(s)进(j)两个字符空格,用于\mt{solution}环境中,因为这个环境另起一段不能自动缩进.}
@@ -196,10 +214,9 @@ $$
 \pi  \rightarrow \mpi  \,.
 \end{array}
 $$
+设置如下;
 
-由于unicode-math宏包自己提供的数学符号花体和粗体命令,也作的命令的更新,如果不使用unicode-math宏包会报错,将\mt{sysuexam.cls}中行184--185注释掉即可.
-
-\begin{lstlisting}[title={\mt{sysuexam.cls}文件中\mt{\backslash{}msum}和\mt{\backslash{}mpi}}声明和更新命令,language=tex,firstnumber=182]
+\begin{lstlisting}[title={\mt{sysuexam.cls}文件中\mt{\backslash{}msum}和\mt{\backslash{}mpi}}声明和更新命令,language=tex,firstnumber=185]
 % 重设\sum符号
 \DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
 \DeclareMathSymbol{\msum}{\mathop}{largesymbols}{"50}
@@ -210,6 +227,17 @@ $$
 \renewcommand{\boldsymbol}{\symbf}
 \renewcommand{\mathscr}{\symscr}
 \end{lstlisting}
+由于unicode-math宏包自己提供了数学符号花体和粗体命令,也作相应的命令的更新,如果不使用unicode-math宏包会报错,将行192--193注释掉即可.
+
+如果不想更新$\sum$和$\pi$符号,则将\texttt{main.tex}开头的两行替换命令注释掉即可:
+
+\begin{lstlisting}[title={\mt{main.cls}文件中\mt{\backslash{}msum}和\mt{\backslash{}mpi}}更新命令,language=tex,firstnumber=20]
+    \begin{document}
+    \let\pi\mpi                   % 参看第1.5.2节
+    \let\sum\msum
+    \maketitle
+\end{lstlisting}
+
 
 \subsubsection{页面边距}
 修改此处代码即可.
@@ -227,7 +255,7 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
 
 \subsubsection{代码高亮}
 代码高亮设置如下,更多内容请参考\href{http://texdoc.net/texmf-dist/doc/latex/listings/listings.pdf}{listings宏包}.
-\begin{lstlisting}[title=代码高亮设置,language=tex,firstnumber=220]
+\begin{lstlisting}[title=代码高亮设置,language=tex,firstnumber=224]
     columns=fixed,
     numbers=left,                                % 在左侧显示行号
     frame=tb,                                    % 背景边框
@@ -246,6 +274,11 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
     breaklines=true,                             % 断行
     breakatwhitespace=true,                      % 在空格处断行
     captionpos=b,                                % 设置标题位置
+\end{lstlisting}
+
+\subsubsection{\texttt{list}选项缩进距离}
+\begin{lstlisting}[title=设置整体缩进距离,language=tex,firstnumber=386]
+    \list{\arabic{Question}.}{\setlength{\leftmargin}{0pt}} % 修改\leftmargin{<距离>}中的参数即可修改缩进距离
 \end{lstlisting}
 
 \section{版本说明}
@@ -277,9 +310,22 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
 
 \ver{v1.1}{(2020/01/22)}\par
 \begin{compactitem}
-    \item 修改页脚页码格式为``第$x$页\quad 共$y$页''(这是一开始就想做的,不小心忘记了).
+    \item 修改页脚页码格式为``第$x$页\quad 共$y$页'' (这是一开始就想做的,不小心忘记了).
+\end{compactitem}
+
+
+\ver{v1.2}{(2021/08/16)}\par
+\begin{compactitem}
+    \item 修复答题之间小题目标号不能重置的问题,即\texttt{\backslash{}question}的选项\texttt{r}失效的问题.
+    \item 分数说明的分值与``分''之间的间隙修正.
+    \item 添加命令\texttt{\backslash{}scoreremark}、\texttt{\backslash{}equscore}和\texttt{\backslash{}equscoreremark}.
+    \item 新增子解题环境\texttt{subsolutions},子题解标号\texttt{\backslash{}subsolution},子题解标注``解''字命令\texttt{\backslash{}subanswers}.
+    \item 删除\texttt{\backslash{}ans}、\texttt{\backslash{}proof}命令,整合到\texttt{\backslash{}answer}命令中.
+    \item 删改、增添命令说明等.
+    \item 修改部分样卷排版.
 \end{compactitem}
 }
+
 
 \section{样卷与说明}
 
@@ -393,7 +439,7 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
 \begin{questions}
     \question[10] 简要分析冲激响应不变法为什么不能用于设计数字高通和带阻滤波器.
     \begin{solution}
-        \ans 冲击响应不变法实际是一种时域逼近方法,即用滤波器的采样信号$h(n)$去逼近滤波器的冲击响应$h(t)$,而采样会带来频谱混叠,在高通或带阻的情况下,模拟滤波器的高频部分存在较高增益,因此在采样后,数字滤波器的在频域会产生严重的混叠,导致原来的阻带(低频)会叠加上高频部分的多个周期延拓,导致阻带增益增加,失去滤除低频成分的能力.同时,数字滤波器的高频部分也受到污染,导致通带特性改变.
+        \answers[答] 冲击响应不变法实际是一种时域逼近方法,即用滤波器的采样信号$h(n)$去逼近滤波器的冲击响应$h(t)$,而采样会带来频谱混叠,在高通或带阻的情况下,模拟滤波器的高频部分存在较高增益,因此在采样后,数字滤波器的在频域会产生严重的混叠,导致原来的阻带(低频)会叠加上高频部分的多个周期延拓,导致阻带增益增加,失去滤除低频成分的能力.同时,数字滤波器的高频部分也受到污染,导致通带特性改变.
     \end{solution}
 \end{questions}
 
@@ -547,7 +593,7 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
 \begin{questions}[rs]
     \question[5] 请分析傅里叶变换的不确定性对信号分析的影响.
     \begin{solution}
-        \ans 不知道.
+        \answers[答] 不知道.
 
         \sj 有没有一种信号在空域和频域上的分布都很广泛呢?有的,最简单的例子就是噪声信号.一段纯粹的白噪声,其傅立叶变换也仍然是噪声,所以它在空域和频域上的分布都是广泛的.如果用信号处理的语言来说,这就说明「噪声本身是不可压缩的」.这并不违反直觉,因为信号压缩的本质就是通过挖掘信息的结构和规律来对它进行更简洁的描述,而噪声,顾名思义,就是没有结构和规律的信号,自然也就无从得以压缩.
 
@@ -702,17 +748,16 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
     \end{subquestions}
     \hint 低通到高通的映射关系$p=\frac{\lambda_{p}\Omega_{ph}}{s}$,频率映射关系$\lambda=-\frac{\lambda_{p}\Omega_{ph}}{\Omega}$.二阶和三阶巴特沃斯3dB频率归一化低通滤波器的系统函数为$G_{2}(p)=\frac{1}{p^{2}+1.4142 p+1}, G_{3}(p)=\frac{1}{p^{3}+2 p^{2}+2 p+1}$.
     \begin{solution}
-        \answers (1) 对应的低通滤波的通带边界频率为10Hz,阻带边界频率为100Hz,因此低通滤波器的\par
-        $\lambda_{s p}=\frac{\lambda_{s}}{\lambda_{p}}=10, \quad k_{s p}=\sqrt{\frac{10^{\alpha_{s} 10}-1}{10^{\alpha_{p} / 10}-1}}=19.5538\,;$\score{1}{1}
-        $N=\frac{\lg k_{s p}}{\lg \lambda_{s p}}=1.2912\,, 取N=2\,;$\score{1}{2}
-        $$\lambda_{c}=\lambda_{p}\left(10^{0.1 a_{p}}-1\right)^{-\frac{1}{2 N}}=1.4019\quad 或\quad \lambda_{c}=\lambda_{s}\left(10^{0.1 a_{s}}-1\right)^{-\frac{1}{2 N}}=3.1702\,.$$\score{1}{3}
-
-        \sj (2) $$
-        Q(p)=\left.G\left(p^{\prime}\right)\right|_{p^{\prime}=p / \lambda_{c}}=\frac{\lambda_{c}^{2}}{p^{2}+1.4142 p \lambda_{c}+\lambda_{c}^{2}}=\frac{1.965}{p^{2}+1.983 p+1.965},\quad \lambda_{c}=1.4019\,.
-        $$\score{3}{6}
-
-        \sj (3)
+        \begin{subsolutions}
+            \subsolution \subanswers 对应的低通滤波的通带边界频率为10Hz,阻带边界频率为100Hz,因此低通滤波器的
+        \equscore{$\lambda_{s p}=\frac{\lambda_{s}}{\lambda_{p}}=10, \quad k_{s p}=\sqrt{\frac{10^{\alpha_{s} 10}-1}{10^{\alpha_{p} / 10}-1}}=19.5538\,;$}{1}{1}
+        \equscore{$N=\frac{\lg k_{s p}}{\lg \lambda_{s p}}=1.2912\,, 取N=2\,;$}{1}{2}
+        \equscoreremark{$\lambda_{c}=\lambda_{p}\left(10^{0.1 a_{p}}-1\right)^{-\frac{1}{2 N}}=1.4019\: 或\:\lambda_{c}=\lambda_{s}\left(10^{0.1 a_{s}}-1\right)^{-\frac{1}{2 N}}=3.1702\,.$}{1分}
+            \subsolution 
+            $$ Q(p)=\left.G\left(p^{\prime}\right)\right|_{p^{\prime}=p\, /\, \lambda_{c}}=\frac{\lambda_{c}^{2}}{p^{2}+1.4142 p \lambda_{c}+\lambda_{c}^{2}}=\frac{1.965}{p^{2}+1.983 p+1.965},\quad \lambda_{c}=1.4019\,.
         $$
+            \subsolution
+            $$
         \begin{aligned}
         H_{H P}(s) &=\left.Q(p)\right|_{p=\frac{\lambda_{p} \Omega_{p h}}{s}}\\
         &=\frac{\lambda_{c}^{2}}{\left(\frac{\Omega_{p h}}{s}\right)^{2}+1.4142 \times \lambda_{c}\left(\frac{\Omega_{p h}}{s}\right)+\lambda_{c}^{2}}\\
@@ -720,6 +765,7 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
         &=\frac{s^{2}}{200874+633.83 s+s^{2}}, \quad \Omega_{p h}=2 \mpi \cdot 100\,.
         \end{aligned}
         $$\score{4}{10}
+        \end{subsolutions}
 
         \remark 题(2)中$\lambda_c$不能通过求算$\Omega_c=\Omega_p(10^{0.1\alpha_p}-1)^{-\frac{1}{2N}}$或$\Omega_c=\Omega_s(10^{0.1\alpha_s}-1)^{-\frac{1}{2N}}$,然后代入$\lambda=-\frac{\lambda_{p}\Omega_{ph}}{\Omega}$计算.这样会得到$\lambda_{c}=\lambda_{p}\left(10^{0.1 a_{p}}-1\right)^{\frac{1}{2 N}}$或$\lambda_{c}=\lambda_{s}\left(10^{0.1 a_{s}}-1\right)^{\frac{1}{2 N}}$.原因是频率映射关系$\lambda=-\frac{\lambda_{p}\Omega_{ph}}{\Omega}$是线性映射,只有$0,\Omega_{ph},\Omega_{sh},-\infty,+\infty$这些位置是对应的,其他频率并不对应;而且$\Omega_c$计算公式只针对巴特沃斯低通滤波器成立.
     \end{solution}
@@ -731,7 +777,7 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
     当且仅当$$\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}=(\hat{\theta}-\theta) k(\theta)$$时,上式的等号成立.\par
     
     \begin{solution}[10cm]
-    \proof 设$\hat{\theta}$是无偏估计,则有$E(\hat{\theta}-\theta)=0$,即
+    \answers[证明] 设$\hat{\theta}$是无偏估计,则有$E(\hat{\theta}-\theta)=0$,即
     $$E(\hat{\theta}-\theta)=\int_{-\infty}^{\infty}(\hat{\theta}-\theta) f(\boldsymbol{z} ; \theta) \mathrm{d} z=0,$$
     对$\theta$求导,得到(正则条件保证积分号和微分号可交换)
     $$\frac{\partial}{\partial \theta} \int_{-\infty}^{\infty}(\hat{\theta}-\theta) f(\boldsymbol{z} ; \theta) \mathrm{d} z=\int_{-\infty}^{\infty} \frac{\partial}{\partial \theta}[(\hat{\theta}-\theta) f(\boldsymbol{z} ; \theta)] \mathrm{d} z=0\,,$$
@@ -764,20 +810,20 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
         \item CRLB定理不成立的情况:概率密度非零的区间与被估计量有关,如:概率密度为$(0,\theta)$上的均匀分布,而$\theta$为被估计量.
     \end{compactitem}
     
-    (2) 正则条件保证了上述要求,即
+    \sj (2) 正则条件保证了上述要求,即
     $$0=E\left\{\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}\right\}=\int_{-\infty}^{+\infty}\frac{\partial \ln f(\boldsymbol{z}  ; \theta)}{\partial \theta} f(\boldsymbol{z}  ; \theta) \mathrm{d} z =\int_{-\infty}^{\infty} \frac{\partial f(\boldsymbol{z} ; \theta)}{\partial \theta}\mathrm{d}  z ,$$
     又$\frac{\partial}{\partial \theta} \int_{-\infty}^{\infty} f(\boldsymbol{z} ; \theta) \mathrm{d}z=0$,故
     $$\int_{-\infty}^{\infty} \frac{\partial f(\boldsymbol{z} ; \theta)}{\partial \theta} \mathrm{d} z=\frac{\partial}{\partial \theta} \int_{-\infty}^{\infty} f(\boldsymbol{z} ; \theta) \mathrm{d} z.$$
     
-    (3) $I(\theta)$成为Fisher信息\,$I$越大,越有可能得到好的估计.
+    \sj (3) $I(\theta)$成为Fisher信息\,$I$越大,越有可能得到好的估计.
     
-    (4) 如果有效估计量存在,则该有效估计量一定是最大似然估计.因为如果有效估计量存在,这表明满足
+    \sj (4) 如果有效估计量存在,则该有效估计量一定是最大似然估计.因为如果有效估计量存在,这表明满足
     $$\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}=k(\theta)(\hat{\theta}-\theta),$$
     而最大似然估计满足
     $$\left.\frac{\partial \ln f(\boldsymbol{z} ; \theta)}{\partial \theta}\right|_{\theta=\hat{\theta}_{\text{ml}}}=0,$$
     所以有$k\left(\hat{\theta}_{\text{ml}}\right)\left(\hat{\theta}-\hat{\theta}_{\text{ml}}\right)=0$,即$\hat{\theta}=\hat{\theta}_{\text{ml}}$.
     
-    (5) 如果有效估计量不存在,则最大似然估计的方差不一定是最小的.
+    \sj (5) 如果有效估计量不存在,则最大似然估计的方差不一定是最小的.
     \end{solution}
 
     \question[10]设
@@ -791,9 +837,7 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
 	求$\mathrm{e}^{\symbf{A}t}$(其中$t$为参数).
 
     \begin{solution}[10cm]
-    \answers
-
-    \method 通过矩阵函数的Jordan表示计算.因为$$
+    \answers \method 通过矩阵函数的Jordan表示计算.因为$$
 		|\lambda \boldsymbol{I}-\boldsymbol{A}|=\left|\lk\begin{array}{ccc}
 			\lambda-3 & -1        & 1       \\
 			-1        & \lambda-2 & 1       \\
@@ -855,7 +899,7 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
 		\end{aligned}
     $$
 
-    \method 通过矩阵函数的多项式表示计算. $\symbf{A}$ 的最小多项式
+    \sj \method 通过矩阵函数的多项式表示计算. $\symbf{A}$ 的最小多项式
 	$$
 		\varphi_{\symbf{A}}(x)=(x-1)(x-2)^{2}\,.
 	$$
@@ -915,7 +959,8 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
 
     \begin{solution}
         \thought 通过分析输入与输出的频谱来设计滤波器.
-        \answers (1) $y(t)$的频谱$F(j\omega)$如下图所示.
+        \begin{subsolutions}
+            \subsolution \subanswers $y(t)$的频谱$F(j\omega)$如下图所示.
         \begin{center}
             \begin{tikzpicture}
                 \pgfplotsset{width=5cm,height=3.5cm}
@@ -939,8 +984,7 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
                 \end{axis}
             \end{tikzpicture}
         \end{center}
-
-        \sj (2) 抽样信号 $f_{s}(t)$ 的频谱 $\Omega=2 \mpi / T=\mpi$,
+            \subsolution 抽样信号 $f_{s}(t)$ 的频谱 $\Omega=2 \mpi / T=\mpi$,
         $$
         F_{s}(j \omega)=\frac{1}{2 \mpi} F(j \omega) * \Omega \delta_{\Omega}(\omega)=\frac{1}{T} F(j \omega)*\delta_{\mpi}(\omega)=\frac{1}{2} \msum_{n=-\infty}^{+\infty} G_{\mpi / 2}(\omega-n \mpi)\,.
         $$
@@ -1107,21 +1151,11 @@ right=25mm,top=25mm,bottom=25mm,headheight=20mm} % 双栏设置
             \draw (-2.9,2.5) node[left]{\footnotesize $1/\mathrm{Sinc}\left(\frac{\omega}{2}\right)$};
         \end{tikzpicture}
     \end{center}
+    \end{subsolutions}
     \end{solution}
 \end{questions}
 \end{groups}
 %%%%%%%%%%%%%%%%%%%%%%%%%% 样卷排版 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%% 使用时将此部分删掉 %%%%%%%%%%%%%%%%%%%%%%
-
-% \newpage
-% ~\vfill
-% \footnote{源自\url{https://tex.stackexchange.com/questions/158668/nice-scientific-pictures-show-off}.}\pipar{3 . 1 4 1 5 9 2 6 5 3 5 8 9 7 9 3 2 3 8 4 6 2 6 4 3 3 8 3 2 7 9 5 0 2 8 8 4 1 9 7 1 6 9 3 9 9 3 7 5 1 0 5 8 2 0 9 7 4 9 4 4 5 9 2 3 0 7 8 1 6 4 0 6 2 8 6  2 0 8 9 9 8 6 2 8 0 3 4 8 2 5 3 4 2 1 1 7 0 6 7 9 8 2 1 4 8 0 8 6 5 1 3 2 8 2 3 0 6 6 4 7 0 9 3 8 4 4 6 0 9 5 5 0 5 8 2 2 3 1 7 2 5 3 5 9 4 0 8 1 2 8 4 8 1  1 1 7 4 5 0 2 8 4 1 0 2 7 0 1 9 3 8 5 2 1 1 0 5 5 5 9 6 4 4 6 2 2 9 4 8 9 5 4 9 3 0 3 8 1 9 6 4 4 2 8 8 1 0 9 7 5 6 6 5 9 3 3 4 4 6 1 2 8 4 7 5 6 4 8 2 3 3  7 8 6 7 8 3 1 6 5 2 7 1 2 0 1 9 0 9 1 4 5 6 4 8 5 6 6 9 2 3 4 6 0 3 4 8 6 1 0 4 5 4 3 2 6 6 4 8 2 1 3 3 9 3 6 0 7 2 6 0 2 4 9 1 4 1 2 7 3 7 2 4 5 8 7 0 0 6  6 0 6 3 1 5 5 8 8 1 7 4 8 8 1 5 2 0 9 2 0 9 6 2 8 2 9 2 5 4 0 9 1 7 1 5 3 6 4 3 6 7 8 9 2 5 9 0 3 6 0 0 1 1 3 3 0 5 3 0 5 4 8 8 2 0 4 6 6 5 2 1 3 8 4 1 4 6  9 5 1 9 4 1 5 1 1 6 0 9 4 3 3 0 5 7 2 7 0 3 6 5 7 5 9 5 9 1 9 5 3 0 9 2 1 8 6 1 1 7 3 8 1 9 3 2 6 1 1 7 9 3 1 0 5 1 1 8 5 4 8 0 7 4 4 6 2 3 7 9 9 6 2 7 4 9  5 6 7 3 5 1 8 8 5 7 5 2 7 2 4 8 9 1 2 2 7 9 3 8 1 8 3 0 1 1 9 4 9 1 7}
-% \vfill
-
-%%%%%%%%%%%%%%%%%%%%%% 使用时将此部分删掉 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{document}
